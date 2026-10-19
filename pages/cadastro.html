@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastre-se | Adotaí</title>
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/login_style.css">
+    <link rel="stylesheet" href="../styles/cadastro_style.css">
+    <script src="../scripts/cadastro.js" defer></script>
+</head>
+<body>
+    <header>
+        <a class="brand" href="../pages/index.html">
+            <img class="brand-icon" src="../images/logo_img.png" alt="Dog Logo">
+            <img class="brand-text" src="../images/logo_text.png" alt="Dog Logo Text">
+        </a>
+
+        <input type="checkbox" id="menu-toggle" aria-label="Abrir menu">
+        <label for="menu-toggle" class="menu-btn" aria-hidden="true">
+            <span></span><span></span><span></span>
+        </label>
+
+        <nav>
+            <a href="../pages/index.html">Inicio</a>
+            <a href="../pages/catalogo.html">Animais</a>
+            <a href="#">Planos</a>
+            <a href="#footer-contato">Contato</a>
+        </nav>
+
+        <a id="adoption-header" href="../pages/login.html">
+            <img style="height: 30px;" 
+            src="../images/user_icon.png">
+        </a>
+
+    </header>
+
+    <main class="login-main">
+        <section class="login-card cadastro-card">
+            <div class="login-visual">
+                <img src="../images/cachorro_hero.png" alt="">
+                <div class="login-visual-text">
+                    <h2>Faça parte da família Adotaí</h2>
+                    <p>Crie sua conta e ajude a transformar a vida de um animal.</p>
+                </div>
+            </div>
+
+            <div class="login-form-area">
+                <h1>Criar conta</h1>
+                <p class="login-subtitle">Conte quem você é para começarmos.</p>
+
+                <p id="cadastro-erro" class="login-erro" role="alert" hidden></p>
+
+                <form id="cadastro-form" action="../api/cadastro.php" method="post">
+
+                    <!-- 1) TIPO DE USUÁRIO -->
+                    <fieldset class="tipo-grupo">
+                        <legend>Como você quer usar o Adotaí?</legend>
+
+                        <div class="tipo-opcoes">
+                            <label class="tipo-card">
+                                <input type="radio" name="tipo_usuario" value="adotante" checked>
+                                <span class="tipo-conteudo">
+                                    <strong>Quero adotar</strong>
+                                </span>
+                            </label>
+
+                            <label class="tipo-card">
+                                <input type="radio" name="tipo_usuario" value="protetor">
+                                <span class="tipo-conteudo">
+                                    <strong>Protejo animais</strong>
+                                    <small>Protetor (pessoa ou ONG)</small>
+                                </span>
+                            </label>
+
+                            <label class="tipo-card">
+                                <input type="radio" name="tipo_usuario" value="veterinario">
+                                <span class="tipo-conteudo">
+                                    <strong>Sou veterinário(a)</strong>
+                                    <small>Cadastro de planos de saúde</small>
+                                </span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <!-- 2) SÓ PARA PROTETOR: pessoa (CPF) ou ONG (CNPJ) -->
+                    <fieldset id="bloco-protetor" class="subgrupo" hidden disabled>
+                        <legend>Você atua como:</legend>
+
+                        <div class="categoria-opcoes">
+                            <label class="categoria-pill">
+                                <input type="radio" name="categoria_protetor" value="pessoa" checked>
+                                <span>Pessoa física (CPF)</span>
+                            </label>
+                            <label class="categoria-pill">
+                                <input type="radio" name="categoria_protetor" value="ong">
+                                <span>ONG (CNPJ)</span>
+                            </label>
+                        </div>
+
+                        <div class="campo">
+                            <label for="documento" id="label-documento">CPF</label>
+                            <input type="text" id="documento" name="documento"
+                                   inputmode="numeric" placeholder="000.000.000-00"
+                                   maxlength="14" autocomplete="off" required>
+                        </div>
+
+                        <div class="campo" id="campo-responsavel" hidden>
+                            <label for="responsavel">Nome do responsável pela ONG</label>
+                            <input type="text" id="responsavel" name="responsavel"
+                                   placeholder="Nome completo" autocomplete="name" disabled required>
+                        </div>
+                    </fieldset>
+
+                    <!-- 3) SÓ PARA VETERINÁRIO -->
+                    <fieldset id="bloco-veterinario" class="subgrupo" hidden disabled>
+                        <legend>Dados profissionais</legend>
+
+                        <div class="campos-linha">
+                            <div class="campo">
+                                <label for="crmv">Nº do CRMV</label>
+                                <input type="text" id="crmv" name="crmv" inputmode="numeric"
+                                       placeholder="Ex.: 12345" maxlength="8" autocomplete="off" required>
+                            </div>
+                            <div class="campo">
+                                <label for="crmv_uf">UF do CRMV</label>
+                                <select id="crmv_uf" name="crmv_uf" required>
+                                    <option value="" selected disabled>Selecione</option>
+                                    <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                                    <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                                    <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                                    <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                                    <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                                    <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                                    <option>SP</option><option>SE</option><option>TO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- 4) DADOS COMUNS A TODOS -->
+                    <div class="campo">
+                        <label for="nome" id="label-nome">Nome completo</label>
+                        <input type="text" id="nome" name="nome" placeholder="Seu nome completo"
+                               autocomplete="name" required>
+                    </div>
+
+                    <div class="campos-linha">
+                        <div class="campo">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" name="email" placeholder="voce@exemplo.com"
+                                   autocomplete="email" required>
+                        </div>
+                        <div class="campo">
+                            <label for="telefone">Telefone / WhatsApp</label>
+                            <input type="tel" id="telefone" name="telefone" inputmode="tel"
+                                   placeholder="(00) 00000-0000" maxlength="15"
+                                   autocomplete="tel" required>
+                        </div>
+                    </div>
+
+                    <div class="campos-linha">
+                        <div class="campo">
+                            <label for="senha">Senha</label>
+                            <div class="campo-senha">
+                                <input type="password" id="senha" name="senha" placeholder="Mínimo 8 caracteres"
+                                       autocomplete="new-password" minlength="8" required>
+                                <button type="button" class="toggle-senha" data-alvo="senha"
+                                        aria-label="Mostrar senha" aria-pressed="false">Mostrar</button>
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <label for="confirmar_senha">Confirmar senha</label>
+                            <div class="campo-senha">
+                                <input type="password" id="confirmar_senha" name="confirmar_senha"
+                                       placeholder="Repita a senha"
+                                       autocomplete="new-password" minlength="8" required>
+                                <button type="button" class="toggle-senha" data-alvo="confirmar_senha"
+                                        aria-label="Mostrar senha" aria-pressed="false">Mostrar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="lembrar termos">
+                        <input type="checkbox" name="aceita_termos" value="1" required>
+                        <span>Li e aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a>.</span>
+                    </label>
+
+                    <button type="submit" class="btn-login">Criar conta</button>
+                </form>
+
+                <p class="login-cadastro">
+                    Já tem conta? <a href="../pages/login.html">Entrar</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div id="footer-logo">
+            <div class="footer-brand">
+                <img src="../images/logo_img_footer2.png" alt="">
+                <img src="../images/logo_text_footer.png" alt="Adotaí">
+            </div>
+            <p>
+                Somos uma organização, sem fins lucrativos
+                que resgata, cuida e encontra lares cheios
+                de amor para animais abandonados.
+            </p>
+        </div>
+        <div id="footer-contato">
+            <h3>Contato</h3>
+            <p>contato@adotai.org ✉</p>
+            <p>(99) 9 9999-9999 ☏</p>
+            <p>Curitiba - PR 🖈</p>
+        </div>
+    </footer>
+
+</body>
+</html>

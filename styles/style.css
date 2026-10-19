@@ -84,7 +84,7 @@ header nav a:hover {
 #adoption-header {
     color: var(--creme);
     background-color: var(--laranja);
-    border-radius: 20px;
+    border-radius: 100%;
     padding: 12px 20px;
     text-decoration: none;
     white-space: nowrap;
@@ -415,6 +415,7 @@ footer {
         order: 4;
         text-align: center;
         margin: 8px 0 12px;
+        border-radius: 30px;
     }
 
     #menu-toggle:checked ~ nav { display: flex; }

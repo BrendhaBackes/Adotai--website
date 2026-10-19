@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar | Adotaí</title>
+    <link rel="stylesheet" href="../styles/login_style.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <script src="../scripts/login_handler.js" defer></script>
+</head>
+<body>
+    <header>
+        <a class="brand" href="index.html">
+            <img class="brand-icon" src="../images/logo_img.png" alt="Dog Logo">
+            <img class="brand-text" src="../images/logo_text.png" alt="Dog Logo Text">
+        </a>
+
+        <input type="checkbox" id="menu-toggle" aria-label="Abrir menu">
+        <label for="menu-toggle" class="menu-btn" aria-hidden="true">
+            <span></span><span></span><span></span>
+        </label>
+
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="catalogo.html">Animais</a>
+            <a href="#">Planos</a>
+            <a href="#footer-contato">Contato</a>
+        </nav>
+
+        <a id="adoption-header" href="#">
+            <img style="height: 30px;" 
+            src="../images/user_icon.png">
+        </a>
+
+    </header>
+
+    <main class="login-main">
+        <section class="login-card">
+            <div class="login-visual">
+                <img src="../images/cachorro_hero.png" alt="">
+                <div class="login-visual-text">
+                    <h2>Seu melhor amigo te espera!</h2>
+                    <p>Entre para acompanhar sua adoção e conhecer novos amigos.</p>
+                </div>
+            </div>
+
+            <div class="login-form-area">
+                <h1>Entrar</h1>
+                <p class="login-subtitle">Acesse sua conta para continuar.</p>
+
+                <p id="login-erro" class="login-erro" role="alert" hidden>
+                    E-mail ou senha incorretos. Tente novamente.
+                </p>
+
+                <form id="login-form" action="api/login.php" method="post">
+                    <div class="campo">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email"
+                               placeholder="voce@exemplo.com"
+                               autocomplete="email" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="senha">Senha</label>
+                        <div class="campo-senha">
+                            <input type="password" id="senha" name="senha"
+                                   placeholder="Sua senha"
+                                   autocomplete="current-password"
+                                   minlength="6" required>
+                            <button type="button" id="toggle-senha" class="toggle-senha"
+                                    aria-label="Mostrar senha"
+                                    aria-pressed="false">
+                                    Mostrar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="login-opcoes">
+                        <label class="lembrar">
+                            <input type="checkbox" name="lembrar" value="1">
+                            <span>Lembrar de mim</span>
+                        </label>
+                        <a href="#">Esqueci minha senha</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">Entrar</button>
+                </form>
+
+                <p class="login-cadastro">
+                    Ainda não tem conta? <a href="./cadastro.html">Cadastre-se</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div id="footer-logo">
+            <div class="footer-brand">
+                <img src="../images/logo_img_footer2.png" alt="">
+                <img src="../images/logo_text_footer.png" alt="Adotaí">
+            </div>
+            <p>
+                Somos uma organização, sem fins lucrativos
+                que resgata, cuida e encontra lares cheios
+                de amor para animais abandonados.
+            </p>
+        </div>
+        <div id="footer-contato">
+            <h3>Contato</h3>
+            <p>contato@adotai.org ✉</p>
+            <p>(99) 9 9999-9999 ☏</p>
+            <p>Curitiba - PR 🖈</p>
+        </div>
+    </footer>
+</body>
+</html>
