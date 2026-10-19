@@ -1,0 +1,496 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@400;600;700&display=swap');
+
+/* =========================================
+   PALETA (Color Scheme) + VARIÁVEIS
+   ========================================= */
+:root {
+    --laranja:  #e88a20;
+    --creme:    #f5f2eb;
+    --escuro:   #251c19;
+    --pessego:  #fcebd3;
+    --marrom:   #6d4c3d;
+    --texto:    #1f2937;
+
+    --pad-x: clamp(16px, 4vw, 48px);   /* margem lateral que cresce com a tela */
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* =========================================
+   BASE
+   ========================================= */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    color: var(--texto);
+    background-color: var(--creme);
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   HEADER
+   ========================================= */
+header {
+    position: relative;
+    z-index: 10;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 8px var(--pad-x);
+
+    box-shadow: 0 1px 15px 2px rgba(148, 148, 148, 0.52);
+    background-color: var(--creme);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-icon { width: 70px; }
+.brand-text { height: 36px; width: auto; }
+
+header nav {
+    display: flex;
+    gap: 30px;
+}
+
+header nav a {
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+    color: var(--texto);
+    text-decoration: none;
+}
+
+header nav a:hover {
+    border-bottom-color: var(--laranja);
+}
+
+#adoption-header {
+    color: var(--creme);
+    background-color: var(--laranja);
+    border-radius: 20px;
+    padding: 12px 20px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* Hambúrguer escondido no desktop */
+#menu-toggle { display: none; }
+.menu-btn    { display: none; }
+
+/* =========================================
+   HERO
+   Desktop: foto à direita, texto por cima.
+   Todos os filhos ocupam a mesma "célula" do grid.
+   ========================================= */
+#hero {
+    display: grid;
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(420px, 42vw, 760px);
+}
+
+#hero > * {
+    grid-area: 1 / 1;
+}
+
+#dog-hero {
+    justify-self: end;
+    align-self: start;
+    width: 80%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    z-index: 0;
+
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 35%, black 100%);
+            mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 35%, black 100%);
+}
+
+#banner-transparency {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: top;
+    z-index: 1;
+    pointer-events: none;
+}
+
+#hero-card {
+    position: relative;
+    z-index: 2;
+    align-self: center;
+
+    max-width: min(620px, 55%);
+    padding: 40px var(--pad-x) 80px;
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
+}
+
+#hero-card h1 {
+    margin: 0;
+    font-size: clamp(1.9rem, 3.6vw, 3.2rem);
+    line-height: 1.15;
+}
+
+#hero-card h1 .destaque {
+    display: block;
+    color: var(--laranja);
+}
+
+#hero-card p {
+    margin: 16px 0 24px;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 20px;
+    border-radius: 15px;
+    border: 2px solid var(--escuro);
+    text-decoration: none;
+    font-size: 100%;
+    cursor: pointer;
+    color: var(--texto);
+}
+
+.btn-primary {
+    background-color: var(--laranja);
+    border-color: var(--laranja);
+    color: #fff;
+}
+
+/* =========================================
+   COMO ADOTAR
+   ========================================= */
+   
+#como-adotar {
+    padding: 0 var(--pad-x);
+    margin-top: 0;
+    text-align: center;
+}
+
+#como-adotar h1 {
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 24px;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+#como-adotar-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.step_card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step_card img {
+    width: min(200px, 100%);
+    height: 200px;
+    object-fit: contain;
+}
+
+.step_card span {
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    margin: 8px 0 10px;
+}
+
+.step_card p {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    max-width: 24ch;
+    text-wrap: balance;
+}
+
+/* =========================================
+   ANIMAIS DISPONIVEIS
+   ========================================= */
+#animais-disponiveis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 var(--pad-x);
+    margin-top: 32px;
+}
+
+#animais-disponiveis h1 {
+    text-align: center;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.radio-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    font-family: sans-serif;
+}
+
+.custom-radio { cursor: pointer; }
+.custom-radio input { display: none; }
+
+.custom-radio span {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: var(--pessego);
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.custom-radio:hover span {
+    color: #ffffffe5;
+    background-color: #e88b20d0;
+}
+
+.custom-radio input:checked + span {
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+#animal-card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 32px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 40px;
+}
+
+.animal-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: 16px;
+    background-color: #fff;
+    font-family: 'Inter', sans-serif;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px 1px #909191c4;
+}
+
+.animal-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.animal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px 0;
+}
+
+.animal-title h2 {
+    margin: 0;
+    padding-bottom: 3px;
+}
+
+.animal-sex {
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 5px 8px;
+    background-color: lightblue;
+}
+
+.animal-card p {
+    margin: 10px 16px 0;
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-top: 48px;
+    padding: 24px var(--pad-x);
+
+    color: var(--creme);
+    background-color: var(--escuro);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+}
+
+#footer-logo {
+    display: flex;
+    flex-direction: column;
+    max-width: 380px;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+}
+
+.footer-brand img { width: 100px; }
+
+#footer-contato {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+}
+
+#footer-contato p { margin-block: 5px; }
+
+/* =========================================
+   TABLET E CELULAR  (até 900px)
+   Menu vira hambúrguer
+   ========================================= */
+@media (max-width: 900px) {
+    header { flex-wrap: wrap; }
+
+    .menu-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 44px;
+        height: 44px;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .menu-btn span {
+        display: block;
+        height: 3px;
+        border-radius: 2px;
+        background: var(--escuro);
+        transition: transform 0.2s, opacity 0.2s;
+    }
+
+    /* menu e botão "Quero Adotar" ficam escondidos até clicar */
+    header nav,
+    #adoption-header {
+        display: none;
+        width: 100%;
+    }
+
+    header nav {
+        flex-direction: column;
+        gap: 0;
+        order: 3;
+    }
+
+    header nav a {
+        padding: 14px 4px;
+        border-bottom: 1px solid var(--pessego);
+    }
+
+    #adoption-header {
+        order: 4;
+        text-align: center;
+        margin: 8px 0 12px;
+    }
+
+    #menu-toggle:checked ~ nav { display: flex; }
+    #menu-toggle:checked ~ #adoption-header { display: block; }
+
+    /* hambúrguer vira "X" */
+    #menu-toggle:checked ~ .menu-btn span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    #menu-toggle:checked ~ .menu-btn span:nth-child(2) { opacity: 0; }
+    #menu-toggle:checked ~ .menu-btn span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    #hero-card { max-width: 50%; }
+
+    /* passos em 2x2 (evita 3 + 1 sozinho) */
+    #como-adotar-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* =========================================
+   CELULAR  (até 640px)
+   Hero empilha: foto em cima, texto embaixo
+   ========================================= */
+@media (max-width: 640px) {
+    #hero {
+        display: block;
+        min-height: 0;
+    }
+
+    #banner-transparency { display: none; }
+
+    #dog-hero {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        object-position: 70% center;
+
+        /* degradê vertical: a foto some suavemente no fundo creme */
+        -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+                mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    }
+
+    #hero-card {
+        max-width: none;
+        margin-top: -40px;
+        padding: 0 var(--pad-x) 16px;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .btn { text-align: center; }
+
+    .brand-icon { width: 56px; }
+    .brand-text { height: 28px; }
+
+    /* passos em 2 colunas, ícones menores */
+    #como-adotar-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px 12px;
+    }
+    .step_card img { width: min(120px, 100%); height: 120px; }
+    .step_card span { font-size: 0.9rem; }
+    .step_card p { font-size: 0.85rem; }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    #footer-logo { align-items: center; }
+
+    #footer-contato {
+        align-items: center;
+        text-align: center;
+    }
+}
