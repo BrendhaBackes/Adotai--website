@@ -712,6 +712,35 @@ COMMIT;
 ALTER TABLE `ongs`
   MODIFY `id_ong` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
+--
+-- AUTO_INCREMENT de tabela `admin`
+--
+
+ALTER TABLE `admin` 
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `admin_convite`
+--
+
+ALTER TABLE `admin_convite` 
+  MODIFY `id_convite` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `suporte`
+--
+  
+ALTER TABLE `suporte`       
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `categoria`
+--
+
+ALTER TABLE `categoria`
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
