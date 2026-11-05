@@ -9,9 +9,51 @@
 (function () {
     const base = new URL('../', document.currentScript.src);   // raiz do site
 
-    // >>> Ajuste aqui quando a página de painel existir <<<
-    const URL_PAINEL = new URL('pages/painel.html', base).href;
-    const URL_LOGOUT = new URL('api/logout.php', base).href;
+    // ==================================================
+    // ITENS DO DROPDOWN POR TIPO DE USUÁRIO  (edite aqui!)
+    //
+    // A chave é o tipo que vem de $_SESSION['usuario_tipo']:
+    //   'admin' | 'protetor' | 'veterinario' | 'adotante'
+    //
+    // Cada item tem:
+    //   texto   -> o que aparece no menu
+    //   caminho -> a página, a partir da RAIZ do site (a pasta adotai/)
+    //
+    // Para ADICIONAR um item:  inclua uma linha { texto: '...', caminho: '...' }
+    // Para MUDAR o destino:    altere só o "caminho" da linha
+    // Para REMOVER:            apague a linha
+    // Para um tipo novo:       crie uma chave nova com sua lista
+    // ==================================================
+    const ITENS_POR_TIPO = {
+        admin: [
+            {
+                texto: 'Painel',
+                caminho: 'pages/painel.html'
+            },
+        ],
+        protetor: [
+            { 
+                texto: 'Cadastrar Animais',
+                caminho: 'pages/cadastrar_animal.html'
+            },
+        ],
+        veterinario: [
+            { 
+                texto: 'Cadastrar Planos', 
+                caminho: 'pages/cadastrar_plano.html'
+            },
+        ],
+        adotante: [
+            // por enquanto só o "Sair"
+        ],
+    };
+
+    // Aparece no final do dropdown de TODOS os tipos
+    const ITEM_SAIR = { 
+        texto: 'Sair', 
+        caminho: 'api/logout.php'
+    };
+
     const URL_SESSAO = new URL('api/sessao.php', base).href;
     const URL_CSS    = new URL('styles/header_user.css', base).href;
 
@@ -30,10 +72,11 @@
         return el;
     }
 
-    function itemLista(texto, href) {
+    // Cria um <li><a> a partir de { texto, caminho }
+    function itemLista(item) {
         const li = document.createElement('li');
-        const a = criar('a', '', texto);
-        a.href = href;
+        const a = criar('a', '', item.texto);
+        a.href = new URL(item.caminho, base).href;   // caminho relativo à raiz do site
         li.appendChild(a);
         return li;
     }
@@ -68,8 +111,10 @@
 
         const lista = criar('ul', 'user-dropdown');
         lista.id = 'user-dropdown';
-        lista.appendChild(itemLista('Painel', URL_PAINEL));
-        lista.appendChild(itemLista('Sair', URL_LOGOUT));
+
+        // itens do tipo de usuário (se o tipo não estiver na lista, fica só o "Sair")
+        const itensDoTipo = ITENS_POR_TIPO[dados.tipo] || [];
+        [...itensDoTipo, ITEM_SAIR].forEach(item => lista.appendChild(itemLista(item)));
 
         menu.append(saudacao, botao, lista);
         iconeOriginal.replaceWith(menu);
