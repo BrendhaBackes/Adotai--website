@@ -1,0 +1,116 @@
+/* =====================================================
+   Header do usuário logado (criado por scripts/header_auth.js)
+   Usa as variáveis de cor definidas em index_style.css
+   ===================================================== */
+
+/* ---------- Desktop: "Olá, Nome" + ícone com dropdown ---------- */
+.user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-saudacao {
+    color: var(--texto);
+    white-space: nowrap;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-btn {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 0;
+    border-radius: 100%;
+    background-color: var(--laranja);
+    cursor: pointer;
+}
+
+.user-btn img {
+    display: block;
+    height: 30px;
+    width: auto;
+}
+
+.user-btn:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    z-index: 20;
+
+    min-width: 180px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+
+    background-color: var(--creme);
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.user-menu.aberto .user-dropdown { display: block; }
+
+.user-dropdown a {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--texto);
+    text-decoration: none;
+}
+
+.user-dropdown a:hover,
+.user-dropdown a:focus-visible {
+    background-color: var(--pessego);
+    outline: none;
+}
+
+/* ---------- Celular/tablet (mesmo ponto do hambúrguer): ----------
+   o bloco entra no menu hambúrguer, com a saudação e as duas opções
+   listadas como os demais links.                                    */
+@media (max-width: 900px) {
+    .user-menu {
+        display: none;               /* só aparece com o hambúrguer aberto */
+        order: 4;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    #menu-toggle:checked ~ .user-menu { display: flex; }
+
+    .user-btn { display: none; }
+
+    .user-saudacao {
+        max-width: none;
+        padding: 14px 4px;
+        border-bottom: 1px solid var(--pessego);
+    }
+
+    .user-dropdown {
+        display: block;
+        position: static;
+        min-width: 0;
+        padding: 0;
+        background: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .user-dropdown a {
+        padding: 14px 4px;
+        border-radius: 0;
+        border-bottom: 1px solid var(--pessego);
+    }
+}
