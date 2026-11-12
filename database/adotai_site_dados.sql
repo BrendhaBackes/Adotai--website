@@ -3,6 +3,13 @@
 --
 -- Rode DEPOIS de adotai_site_estrutura.sql (as tabelas precisam existir).
 -- As tabelas estão na ordem das chaves estrangeiras: "pais" antes dos "filhos".
+--
+-- CONTAS DE DEMONSTRAÇÃO (uma de cada tipo) - senha de todas: adotai@test2026
+--   Adotante    adotante.demo@adotai.com
+--   Protetor    protetor.demo@adotai.com      (pessoa física, já aprovado)
+--   Veterinário veterinario.demo@adotai.com
+--   Admin       admin.demo@adotai.com
+-- Troque ou apague estas contas antes de publicar o site de verdade.
 -- ============================================================================
 
 USE adotai_site;
@@ -16,7 +23,11 @@ INSERT INTO usuario (id, nome, status_conta, telefone, email, senha, data_criaca
 (3, '', 'Ativa', '41990000003', 'contato@laranimal.test', 'TESTE_NAO_USAR_LOGIN', '2026-10-03', NULL),
 (4, '', 'Ativa', '41990000004', 'mariana.adotante@test', 'TESTE_NAO_USAR_LOGIN', '2026-10-04', NULL),
 (5, '', 'Ativa', '41990000005', 'pedro.adotante@test', 'TESTE_NAO_USAR_LOGIN', '2026-10-05', NULL),
-(8, 'eduardo', 'Ativa', '41984036315', 'eduardocavalheirodias4@gmail.com', '$2y$10$XDZKJ2RX17xjjs2detJU1uituhKS6hehQLLXvw.1KknkpIRCr4Fvq', '2026-11-01', NULL);
+(8, 'eduardo', 'Ativa', '41984036315', 'eduardocavalheirodias4@gmail.com', '$2y$10$XDZKJ2RX17xjjs2detJU1uituhKS6hehQLLXvw.1KknkpIRCr4Fvq', '2026-11-01', NULL),
+(9,  'Adotante Demo',    'Ativa', '41990000009', 'adotante.demo@adotai.com',    '$2y$10$.xEZMRQ25EogBaNRstSzfe8cq9SN1o0CG.OPaC9tvPUBRsAVlJYkG', '2026-11-12', NULL),
+(10, 'Protetor Demo',    'Ativa', '41990000010', 'protetor.demo@adotai.com',    '$2y$10$.xEZMRQ25EogBaNRstSzfe8cq9SN1o0CG.OPaC9tvPUBRsAVlJYkG', '2026-11-12', NULL),
+(11, 'Veterinário Demo', 'Ativa', '41990000011', 'veterinario.demo@adotai.com', '$2y$10$.xEZMRQ25EogBaNRstSzfe8cq9SN1o0CG.OPaC9tvPUBRsAVlJYkG', '2026-11-12', NULL),
+(12, 'Admin Demo',       'Ativa', '41990000012', 'admin.demo@adotai.com',       '$2y$10$.xEZMRQ25EogBaNRstSzfe8cq9SN1o0CG.OPaC9tvPUBRsAVlJYkG', '2026-11-12', NULL);
 
 
 -- veterinario
@@ -24,7 +35,8 @@ INSERT INTO veterinario (id_veterinario, nome, cnpj, crmv, especialidade, email,
 (1, 'Ana Martins', NULL, 'CRMV-PR-1001', NULL, NULL, NULL, NULL, NULL, 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (2, 'Carlos Oliveira', NULL, 'CRMV-PR-1002', NULL, NULL, NULL, NULL, NULL, 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 'Fernanda Souza', NULL, 'CRMV-PR-1003', NULL, NULL, NULL, NULL, NULL, 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 'Roberto Lima', NULL, 'CRMV-PR-1004', NULL, NULL, NULL, NULL, NULL, 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(4, 'Roberto Lima', NULL, 'CRMV-PR-1004', NULL, NULL, NULL, NULL, NULL, 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 'Veterinário Demo', NULL, 'CRMV-PR-1005', NULL, 'veterinario.demo@adotai.com', '41990000011', 'Curitiba', 'PR', 'Ativo', '2026-11-12 00:00:00', 11, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
 -- categoria
@@ -44,6 +56,10 @@ INSERT INTO protetor (id_protetor, id_usuario, status_aprovacao, nome_organizaca
 (2, 2, 'Aprovado', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 3, 'Aprovado', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
+-- protetor demo (pessoa física, já aprovada; CPF é de exemplo)
+INSERT INTO protetor (id_protetor, id_usuario, status_aprovacao, nome_organizacao, descricao, email_contato, telefone_contato, endereco, cidade, uf, foto_url, cpf) VALUES
+(4, 10, 'Aprovado', NULL, NULL, 'protetor.demo@adotai.com', '41990000010', NULL, 'Curitiba', 'PR', NULL, '52998224725');
+
 
 -- ongs
 INSERT INTO ongs (id_ong, id_protetor, cnpj) VALUES
@@ -56,7 +72,13 @@ INSERT INTO ongs (id_ong, id_protetor, cnpj) VALUES
 INSERT INTO adotante (id_adotante, id_usuario) VALUES
 (1, 4),
 (2, 5),
-(5, 8);
+(5, 8),
+(6, 9);
+
+
+-- admin demo (nivel_acesso '1')
+INSERT INTO admin (id_admin, id_usuario, nivel_acesso, data_concessao) VALUES
+(1, 12, '1', '2026-11-12');
 
 
 -- animal
@@ -109,7 +131,9 @@ INSERT INTO endereco (id_usuario, cep, uf, cidade, bairro, rua, numero, compleme
 (2, '80020000', 'PR', 'Curitiba', 'São Francisco', 'Rua dos Animais', '200', NULL),
 (3, '83405000', 'PR', 'Colombo', 'Centro', 'Rua da Esperança', '300', NULL),
 (4, '80030000', 'PR', 'Curitiba', 'Rebouças', 'Rua das Palmeiras', '400', NULL),
-(5, '83005000', 'PR', 'São José dos Pinhais', 'Centro', 'Rua do Sol', '500', NULL);
+(5, '83005000', 'PR', 'São José dos Pinhais', 'Centro', 'Rua do Sol', '500', NULL),
+(9,  '80030000', 'PR', 'Curitiba', 'Rebouças', 'Rua das Palmeiras', '400', NULL),
+(10, '80010000', 'PR', 'Curitiba', 'Centro', 'Rua das Flores', '100', NULL);
 
 
 -- lista_interesse

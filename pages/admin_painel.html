@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Adotaí</title>
+    <link rel="stylesheet" href="../styles/index_style.css">
+    <link rel="stylesheet" href="../styles/painel_admin_style.css">
+    <script src="../scripts/header_auth.js" defer></script>
+    <script src="../scripts/painel_admin_handler.js" defer></script>
+</head>
+<body>
+    <header>
+        <a class="brand" href="../index.html">
+            <img class="brand-icon" src="../images/logo_img.png" alt="Dog Logo">
+            <img class="brand-text" src="../images/logo_text.png" alt="Dog Logo Text">
+        </a>
+
+        <input type="checkbox" id="menu-toggle" aria-label="Abrir menu">
+        <label for="menu-toggle" class="menu-btn" aria-hidden="true">
+            <span></span><span></span><span></span>
+        </label>
+
+        <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="catalogo.html">Animais</a>
+            <a href="#">Planos</a>
+            <a href="#">Veterinários</a>
+            <a href="#footer-contato">Contato</a>
+        </nav>
+
+        <a id="adoption-header" href="./login.html">
+            <img style="height: 30px;"
+            src="../images/user_icon.png">
+        </a>
+    </header>
+
+    <main id="admin-painel">
+
+        <!-- ===== Menu lateral (abas) ===== -->
+        <aside class="painel-lateral">
+            <div class="painel-perfil">
+                <span class="painel-avatar" aria-hidden="true">
+                    <img src="../images/user_icon.png" alt="">
+                </span>
+                <div>
+                    <p class="painel-perfil-rotulo">Painel administrativo</p>
+                    <p class="painel-perfil-nome" id="painel-nome">Administrador</p>
+                </div>
+            </div>
+
+            <!-- Cada aba aponta (aria-controls) para a section com o mesmo nome -->
+            <div class="painel-abas" role="tablist" aria-label="Seções do painel" aria-orientation="vertical">
+                <button type="button" role="tab" class="painel-aba" id="aba-resumo"
+                        aria-controls="painel-resumo" aria-selected="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                    <span class="painel-aba-texto">Visão geral</span>
+                </button>
+
+                <button type="button" role="tab" class="painel-aba" id="aba-animais"
+                        aria-controls="painel-animais" aria-selected="false" tabindex="-1">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>
+                    </svg>
+                    <span class="painel-aba-texto">Animais</span>
+                    <span class="painel-aba-badge" id="badge-animais" hidden>0</span>
+                </button>
+
+                <button type="button" role="tab" class="painel-aba" id="aba-protetores"
+                        aria-controls="painel-protetores" aria-selected="false" tabindex="-1">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span class="painel-aba-texto">Protetores</span>
+                    <span class="painel-aba-badge" id="badge-protetores" hidden>0</span>
+                </button>
+
+                <button type="button" role="tab" class="painel-aba" id="aba-suporte"
+                        aria-controls="painel-suporte" aria-selected="false" tabindex="-1">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <span class="painel-aba-texto">Suporte</span>
+                    <span class="painel-aba-badge" id="badge-suporte" hidden>0</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="painel-conteudo">
+
+            <!-- Mensagem de sucesso/erro das ações (aprovar, recusar, responder...) -->
+            <p class="aviso" id="painel-aviso" role="status" hidden></p>
+
+            <!-- =====================================================
+                 ABA: VISÃO GERAL
+                 ===================================================== -->
+            <section class="painel-card" id="painel-resumo" role="tabpanel" aria-labelledby="aba-resumo">
+                <div class="painel-titulo">
+                    <h1>Visão geral</h1>
+                    <p>Acompanhe o que precisa da sua atenção no Adotaí.</p>
+                </div>
+
+                <div class="stats">
+                    <button type="button" class="stat stat-destaque" data-ir-aba="animais" data-filtro="Pendente">
+                        <strong id="stat-animais-pendentes">–</strong>
+                        <span>Animais aguardando aprovação</span>
+                    </button>
+                    <button type="button" class="stat stat-destaque" data-ir-aba="protetores" data-filtro="Pendente">
+                        <strong id="stat-protetores-pendentes">–</strong>
+                        <span>Protetores aguardando aprovação</span>
+                    </button>
+                    <button type="button" class="stat stat-destaque" data-ir-aba="suporte" data-filtro="abertos">
+                        <strong id="stat-suporte-abertos">–</strong>
+                        <span>Chamados em aberto</span>
+                    </button>
+                    <div class="stat">
+                        <strong id="stat-animais-disponiveis">–</strong>
+                        <span>Animais disponíveis para adoção</span>
+                    </div>
+                    <div class="stat">
+                        <strong id="stat-animais-adotados">–</strong>
+                        <span>Animais adotados</span>
+                    </div>
+                    <div class="stat">
+                        <strong id="stat-protetores-total">–</strong>
+                        <span>Protetores aprovados</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =====================================================
+                 ABA: ANIMAIS (moderação)
+                 ===================================================== -->
+            <section class="painel-card" id="painel-animais" role="tabpanel" aria-labelledby="aba-animais" hidden>
+                <div class="painel-titulo">
+                    <h1>Animais</h1>
+                    <p>Analise os animais cadastrados pelos protetores antes de publicá-los no catálogo.</p>
+                </div>
+
+                <div class="barra">
+                    <div class="pills" role="radiogroup" aria-label="Filtrar animais por aprovação">
+                        <label class="pill"><input type="radio" name="filtro-animais" value="Pendente" checked><span>Pendentes</span></label>
+                        <label class="pill"><input type="radio" name="filtro-animais" value="Aprovado"><span>Aprovados</span></label>
+                        <label class="pill"><input type="radio" name="filtro-animais" value="Recusado"><span>Recusados</span></label>
+                        <label class="pill"><input type="radio" name="filtro-animais" value="todos"><span>Todos</span></label>
+                    </div>
+                    <input type="search" class="busca" id="busca-animais" placeholder="Buscar por nome, espécie ou protetor"
+                           aria-label="Buscar animais" autocomplete="off">
+                </div>
+
+                <p class="lista-aviso" id="aviso-animais" hidden></p>
+                <div class="lista" id="lista-animais"></div>
+            </section>
+
+            <!-- =====================================================
+                 ABA: PROTETORES
+                 ===================================================== -->
+            <section class="painel-card" id="painel-protetores" role="tabpanel" aria-labelledby="aba-protetores" hidden>
+                <div class="painel-titulo">
+                    <h1>Protetores</h1>
+                    <p>Aprove ou recuse os cadastros de pessoas e ONGs que querem divulgar animais.</p>
+                </div>
+
+                <div class="barra">
+                    <div class="pills" role="radiogroup" aria-label="Filtrar protetores por aprovação">
+                        <label class="pill"><input type="radio" name="filtro-protetores" value="Pendente" checked><span>Pendentes</span></label>
+                        <label class="pill"><input type="radio" name="filtro-protetores" value="Aprovado"><span>Aprovados</span></label>
+                        <label class="pill"><input type="radio" name="filtro-protetores" value="Recusado"><span>Recusados</span></label>
+                        <label class="pill"><input type="radio" name="filtro-protetores" value="todos"><span>Todos</span></label>
+                    </div>
+                    <input type="search" class="busca" id="busca-protetores" placeholder="Buscar por nome ou e-mail"
+                           aria-label="Buscar protetores" autocomplete="off">
+                </div>
+
+                <p class="lista-aviso" id="aviso-protetores" hidden></p>
+                <div class="lista" id="lista-protetores"></div>
+            </section>
+
+            <!-- =====================================================
+                 ABA: SUPORTE
+                 ===================================================== -->
+            <section class="painel-card" id="painel-suporte" role="tabpanel" aria-labelledby="aba-suporte" hidden>
+                <div class="painel-titulo">
+                    <h1>Suporte</h1>
+                    <p>Responda os chamados abertos pelos usuários.</p>
+                </div>
+
+                <div class="barra">
+                    <div class="pills" role="radiogroup" aria-label="Filtrar chamados">
+                        <label class="pill"><input type="radio" name="filtro-suporte" value="abertos" checked><span>Em aberto</span></label>
+                        <label class="pill"><input type="radio" name="filtro-suporte" value="respondidos"><span>Respondidos</span></label>
+                        <label class="pill"><input type="radio" name="filtro-suporte" value="todos"><span>Todos</span></label>
+                    </div>
+                </div>
+
+                <p class="lista-aviso" id="aviso-suporte" hidden></p>
+                <div class="lista" id="lista-suporte"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- =====================================================
+         JANELA: DETALHES DO ANIMAL (aprovar / recusar)
+         ===================================================== -->
+    <dialog id="dlg-animal" class="janela" aria-labelledby="dlg-animal-titulo">
+        <form method="dialog" class="janela-topo">
+            <h2 id="dlg-animal-titulo">Animal</h2>
+            <button class="janela-fechar" aria-label="Fechar">&times;</button>
+        </form>
+
+        <div class="janela-corpo">
+            <img id="dlg-animal-foto" class="janela-foto" alt="">
+            <div class="janela-badges" id="dlg-animal-badges"></div>
+            <dl class="detalhes" id="dlg-animal-detalhes"></dl>
+
+            <div class="campo">
+                <label for="dlg-animal-obs">Observação para o protetor
+                    <span class="campo-dica">(obrigatória ao recusar)</span></label>
+                <textarea id="dlg-animal-obs" rows="3" maxlength="1000"
+                          placeholder="Ex.: Foto sem o animal em destaque, envie outra imagem."></textarea>
+                <p class="campo-erro" id="dlg-animal-erro" hidden></p>
+            </div>
+        </div>
+
+        <div class="janela-acoes">
+            <button type="button" class="btn-secundario" data-fechar>Fechar</button>
+            <button type="button" class="btn-perigo" id="dlg-animal-recusar">Recusar</button>
+            <button type="button" class="btn-salvar" id="dlg-animal-aprovar">Aprovar</button>
+        </div>
+    </dialog>
+
+    <!-- =====================================================
+         JANELA: CONFIRMAÇÃO (usada para recusar protetor)
+         ===================================================== -->
+    <dialog id="dlg-confirmar" class="janela janela-pequena" aria-labelledby="dlg-confirmar-titulo">
+        <div class="janela-corpo">
+            <h2 id="dlg-confirmar-titulo">Confirmar ação</h2>
+            <p id="dlg-confirmar-texto"></p>
+        </div>
+        <div class="janela-acoes">
+            <button type="button" class="btn-secundario" data-fechar>Cancelar</button>
+            <button type="button" class="btn-perigo" id="dlg-confirmar-ok">Confirmar</button>
+        </div>
+    </dialog>
+
+    <footer>
+        <div id="footer-logo">
+            <div class="footer-brand">
+                <img src="../images/logo_img_footer2.png" alt="">
+                <img src="../images/logo_text_footer.png" alt="Adotaí">
+            </div>
+            <p>
+                Somos uma organização, sem fins lucrativos
+                que resgata, cuida e encontra lares cheios
+                de amor para animais abandonados.
+            </p>
+        </div>
+        <div id="footer-contato">
+            <h3>Contato</h3>
+            <p>contato@adotai.org ✉</p>
+            <p>(99) 9 9999-9999 ☏</p>
+            <p>Curitiba - PR 🖈</p>
+        </div>
+    </footer>
+</body>
+</html>
