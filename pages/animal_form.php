@@ -129,25 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$aviso) {
             $foto = (string)($animal['foto_url'] ?? '');
             $arquivoFoto = $_FILES['foto'] ?? null;
             if ($arquivoFoto && $arquivoFoto['error'] !== UPLOAD_ERR_NO_FILE) {
-                if ($arquivoFoto['error'] !== UPLOAD_ERR_OK || $arquivoFoto['size'] > 5 * 1024 * 1024) {
-                    throw new InvalidArgumentException('A foto deve ter até 5 MB e ser enviada corretamente.');
-                }
-                $info = new finfo(FILEINFO_MIME_TYPE);
-                $mime = $info->file($arquivoFoto['tmp_name']);
-                $extensoes = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-                if (!isset($extensoes[$mime]) || !getimagesize($arquivoFoto['tmp_name'])) {
-                    throw new InvalidArgumentException('Envie uma imagem JPG, PNG ou WEBP válida.');
-                }
-
-                $diretorio = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'fotos' . DIRECTORY_SEPARATOR . 'animais';
-                if (!is_dir($diretorio) && !mkdir($diretorio, 0755, true) && !is_dir($diretorio)) {
-                    throw new InvalidArgumentException('Não foi possível preparar a pasta de fotos.');
-                }
-                $nomeArquivo = bin2hex(random_bytes(16)) . '.' . $extensoes[$mime];
-                if (!move_uploaded_file($arquivoFoto['tmp_name'], $diretorio . DIRECTORY_SEPARATOR . $nomeArquivo)) {
-                    throw new InvalidArgumentException('Não foi possível salvar a foto enviada.');
-                }
-                $foto = 'fotos/animais/' . $nomeArquivo;
+                $foto = salvarFotoAnimal($arquivoFoto);
             }
 
             $valores = [
@@ -314,9 +296,14 @@ cabecalho($editando ? 'Editar animal' : 'Cadastrar animal');
             <label><input type="checkbox" name="vacinado" value="1" <?= !empty($animal['vacinado']) ? 'checked' : '' ?>> Vacinado</label>
             <label><input type="checkbox" name="vermifugado" value="1" <?= !empty($animal['vermifugado']) ? 'checked' : '' ?>> Vermifugado</label>
         </div>
-        <label>Foto (JPG, PNG ou WEBP; até 5 MB)
-            <input type="file" name="foto" accept="image/jpeg,image/png,image/webp">
-        </label>
+        <div class="photo-upload-field">
+            <label for="foto-animal">Foto do animal (JPG, PNG ou WEBP; até 5 MB)</label>
+            <input id="foto-animal" type="file" name="foto" accept="image/jpeg,image/png,image/webp">
+            <div class="animal-photo-preview" id="foto-animal-preview" <?= empty($animal['foto_url']) ? 'hidden' : '' ?>>
+                <img id="foto-animal-preview-img" src="<?= h(animalFotoSrc($animal['foto_url'] ?? '')) ?>" alt="Prévia da foto do animal">
+                <span id="foto-animal-preview-label"><?= empty($animal['foto_url']) ? '' : 'Foto atual' ?></span>
+            </div>
+        </div>
         <label class="full">Descrição
             <textarea name="descricao" rows="5" maxlength="1000" required><?= h($animal['descricao'] ?? '') ?></textarea>
         </label>
@@ -327,4 +314,5 @@ cabecalho($editando ? 'Editar animal' : 'Cadastrar animal');
     <p class="form-help">A foto atual será mantida se nenhum novo arquivo for selecionado.</p>
     <button class="btn btn-primary" type="submit">Salvar animal</button>
 </form>
+<script src="../scripts/animal_form.js" defer></script>
 <?php rodape(); ?>

@@ -105,7 +105,7 @@ function e($valor): string { return htmlspecialchars((string)($valor ?? ''), ENT
                 <p><?= e($animal['descricao']) ?></p>
                 <p class="animal-location"><?= e($animal['cidade'] ?: 'Local não informado') ?><?= !empty($animal['uf']) ? ' - ' . e($animal['uf']) : '' ?></p>
                 <span class="animal-status"><?= e($animal['status_adocao']) ?></span>
-                <a class="btn btn-primary animal-details" href="animal.php?id=<?= (int)$animal['id_animal'] ?>">Ver detalhes</a>
+                <a class="btn btn-primary animal-details" href="animal.php?id=<?= (int)$animal['id_animal'] ?>">Quero adotar ♡</a>
             </article>
         <?php endforeach; ?>
         </div>

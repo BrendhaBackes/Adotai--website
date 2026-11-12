@@ -111,7 +111,7 @@ try {
                                 <div><h3><?= h($animal['nome_animal']) ?></h3><span><?= h($animal['sexo']) ?></span></div>
                                 <p><?= h($animal['especie']) ?> · <?= h($idadeTexto) ?></p>
                                 <p><?= h($animal['cidade'] ?: 'Local a confirmar') ?><?= !empty($animal['uf']) ? ' - ' . h($animal['uf']) : '' ?></p>
-                                <a class="text-link" href="animal.php?id=<?= (int)$animal['id_animal'] ?>">Conhecer história <span aria-hidden="true">→</span></a>
+                                <a class="text-link" href="animal.php?id=<?= (int)$animal['id_animal'] ?>">Quero adotar ♡ <span aria-hidden="true">→</span></a>
                             </div>
                         </article>
                     <?php endforeach; ?>

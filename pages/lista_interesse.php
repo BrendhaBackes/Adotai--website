@@ -8,6 +8,11 @@ validarCsrf();
 $aviso = '';
 $erro = '';
 $itens = [];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    $aviso = (string)($_SESSION['flash_interesse_lista'] ?? '');
+    $erro = (string)($_SESSION['flash_interesse_erro'] ?? '');
+    unset($_SESSION['flash_interesse_lista'], $_SESSION['flash_interesse_erro']);
+}
 
 try {
     $db = db();
@@ -34,7 +39,9 @@ try {
         $stmt = $db->prepare('INSERT INTO lista_animal (id_lista, id_animal) VALUES (:lista, :animal) ON DUPLICATE KEY UPDATE id_animal = VALUES(id_animal)');
         $stmt->execute(['lista' => $listaId, 'animal' => $animalId]);
         $db->commit();
-        $aviso = 'Animal adicionado à sua lista.';
+        $_SESSION['flash_interesse_animal'] = 'Seu interesse foi registrado. Entre em contato com o responsável para iniciar a adoção.';
+        header('Location: animal.php?id=' . $animalId, true, 303);
+        exit;
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remover'])) {
         $animalId = filter_var($_POST['remover'], FILTER_VALIDATE_INT);
         if ($animalId === false || $animalId < 0) {
@@ -42,7 +49,9 @@ try {
         }
         $stmt = $db->prepare('DELETE la FROM lista_animal la INNER JOIN lista_interesse li ON li.id_lista = la.id_lista WHERE li.id_usuario = :usuario AND la.id_animal = :animal');
         $stmt->execute(['usuario' => usuarioId(), 'animal' => $animalId]);
-        $aviso = 'Animal removido da lista.';
+        $_SESSION['flash_interesse_lista'] = 'Animal removido da lista.';
+        header('Location: lista_interesse.php', true, 303);
+        exit;
     }
 
     $stmt = $db->prepare(
@@ -61,10 +70,21 @@ try {
         $db->rollBack();
     }
     if ($e instanceof InvalidArgumentException) {
-        $aviso = $e->getMessage();
+        $mensagemErro = $e->getMessage();
     } else {
-        $erro = mensagemErro($e);
+        $mensagemErro = mensagemErro($e);
     }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $_SESSION['flash_interesse_erro'] = $mensagemErro;
+        $animalId = filter_var($_POST['adicionar'] ?? '', FILTER_VALIDATE_INT);
+        if ($animalId !== false && $animalId >= 0) {
+            header('Location: animal.php?id=' . $animalId, true, 303);
+        } else {
+            header('Location: lista_interesse.php', true, 303);
+        }
+        exit;
+    }
+    $erro = $mensagemErro;
 }
 
 cabecalho('Minha lista de interesse');
@@ -94,7 +114,7 @@ cabecalho('Minha lista de interesse');
                     <p class="form-help">O responsável ainda não cadastrou um contato direto. Veja o anúncio para acompanhar.</p>
                 <?php endif; ?>
                 <div class="card-actions">
-                    <a class="btn btn-primary" href="animal.php?id=<?= (int)$animal['id_animal'] ?>">Ver detalhes</a>
+                    <a class="btn btn-primary" href="animal.php?id=<?= (int)$animal['id_animal'] ?>">Quero adotar ♡</a>
                     <form method="post">
                         <input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>">
                         <button class="btn btn-outline" type="submit" name="remover" value="<?= (int)$animal['id_animal'] ?>">Remover</button>

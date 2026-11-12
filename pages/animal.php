@@ -64,6 +64,10 @@ if (isset($animal['idade_meses'])) {
 
 $contatoHref = '';
 $contatoTexto = '';
+$avisoInteresse = (string)($_SESSION['flash_interesse_animal'] ?? '');
+$erroInteresse = (string)($_SESSION['flash_interesse_erro'] ?? '');
+unset($_SESSION['flash_interesse_animal']);
+unset($_SESSION['flash_interesse_erro']);
 if (!empty($animal['telefone_contato'])) {
     if (($animal['canal_contato'] ?? 'whatsapp') === 'whatsapp') {
         $contatoHref = linkWhatsApp($animal['telefone_contato']);
@@ -92,6 +96,8 @@ cabecalho($animal ? 'Conheça ' . (string)$animal['nome_animal'] : 'Conheça o a
         <a class="btn btn-primary" href="catalogo.php">Voltar ao catálogo</a>
     </div>
 <?php else: ?>
+    <?php if ($avisoInteresse): ?><div class="notice success"><?= h($avisoInteresse) ?></div><?php endif; ?>
+    <?php if ($erroInteresse): ?><div class="notice error"><?= h($erroInteresse) ?></div><?php endif; ?>
     <nav class="detail-breadcrumb" aria-label="Navegação estrutural">
         <a href="index.php">Início</a><span aria-hidden="true">/</span><a href="catalogo.php">Animais</a><span aria-hidden="true">/</span><span><?= h($animal['nome_animal']) ?></span>
     </nav>
@@ -123,7 +129,7 @@ cabecalho($animal ? 'Conheça ' . (string)$animal['nome_animal'] : 'Conheça o a
                 <?php if (usuarioId() > 0): ?>
                     <form class="detail-actions" method="post" action="lista_interesse.php">
                         <input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>">
-                        <button class="btn btn-primary" type="submit" name="adicionar" value="<?= (int)$animal['id_animal'] ?>">Tenho interesse em <?= h($animal['nome_animal']) ?> ♡</button>
+                        <button class="btn btn-primary" type="submit" name="adicionar" value="<?= (int)$animal['id_animal'] ?>">Quero adotar <?= h($animal['nome_animal']) ?> ♡</button>
                         <a class="btn btn-outline" href="lista_interesse.php">Minha lista de interesse</a>
                         <?php if ($contatoHref !== ''): ?>
                             <a class="btn btn-outline" href="<?= h($contatoHref) ?>" <?= str_starts_with($contatoHref, 'https://wa.me/') ? 'target="_blank" rel="noopener noreferrer"' : '' ?>><?= h($contatoTexto) ?></a>
@@ -133,7 +139,7 @@ cabecalho($animal ? 'Conheça ' . (string)$animal['nome_animal'] : 'Conheça o a
                     </form>
                 <?php else: ?>
                     <div class="detail-actions">
-                        <a class="btn btn-primary" href="login.php?retorno=<?= urlencode('animal.php?id=' . (int)$animal['id_animal']) ?>">Entrar para demonstrar interesse ♡</a>
+                        <a class="btn btn-primary" href="login.php?retorno=<?= urlencode('animal.php?id=' . (int)$animal['id_animal']) ?>">Quero adotar <?= h($animal['nome_animal']) ?> ♡</a>
                         <a class="btn btn-outline" href="cadastro.php">Criar conta gratuita</a>
                         <?php if ($contatoHref !== ''): ?>
                             <a class="btn btn-outline" href="<?= h($contatoHref) ?>" <?= str_starts_with($contatoHref, 'https://wa.me/') ? 'target="_blank" rel="noopener noreferrer"' : '' ?>><?= h($contatoTexto) ?></a>
