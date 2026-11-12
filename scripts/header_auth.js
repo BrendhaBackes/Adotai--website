@@ -29,7 +29,7 @@
             { texto: 'Painel',            caminho: 'pages/painel.html' },
         ],
         protetor: [
-            { texto: 'Cadastrar Animais', caminho: 'pages/cadastrar_animal.html' },
+            { texto: 'Cadastrar Animais', caminho: 'pages/protetor_painel.html' },
         ],
         veterinario: [
             { texto: 'Cadastrar Planos',  caminho: 'pages/cadastrar_plano.html' },
