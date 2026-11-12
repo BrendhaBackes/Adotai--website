@@ -8,12 +8,28 @@
 /* O atributo [hidden] precisa ganhar de qualquer "display" definido abaixo */
 [hidden] { display: none !important; }
 
+/* ---------- Rodapé sempre no fim da tela ----------
+   O body vira uma coluna com, no mínimo, a altura da janela e o conteúdo (#admin-painel)
+   ocupa toda a sobra. Assim, em qualquer aba:
+     - pouco conteúdo -> o footer fica colado na borda de baixo da tela;
+     - muito conteúdo -> o footer vem depois dele e a página rola normalmente.
+   Este arquivo só é carregado por admin_painel.html, então o body aqui não afeta outras páginas. */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;   /* celular: acompanha a barra de endereço que aparece e some */
+}
+
 /* ---------- Estrutura: menu lateral + conteúdo ---------- */
 #admin-painel {
     display: grid;
     grid-template-columns: 260px minmax(0, 1fr);
     gap: 24px;
     align-items: start;
+    align-content: start;   /* a altura extra não estica as linhas da grade (evita vão entre menu e conteúdo no celular) */
+    flex: 1 0 auto;         /* ocupa a sobra da tela e empurra o footer para baixo */
+    width: 100%;            /* com margin auto, num body em coluna, a largura encolheria sem isto */
     max-width: 1200px;
     margin: 0 auto;
     padding: clamp(24px, 4vw, 48px) var(--pad-x);

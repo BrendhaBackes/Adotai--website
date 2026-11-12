@@ -26,7 +26,7 @@
     // ==================================================
     const ITENS_POR_TIPO = {
         admin: [
-            { texto: 'Painel',            caminho: 'pages/painel.html' },
+            { texto: 'Painel',            caminho: 'pages/admin_painel.html' },
         ],
         protetor: [
             { texto: 'Cadastrar Animais', caminho: 'pages/protetor_painel.html' },
