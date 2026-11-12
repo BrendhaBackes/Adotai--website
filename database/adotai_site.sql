@@ -740,6 +740,25 @@ ALTER TABLE `suporte`
 ALTER TABLE `categoria`
   MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
+-- veterinario.id_usuario aponta para usuario, mas não tem chave estrangeira
+
+ALTER TABLE `veterinario`
+  ADD CONSTRAINT `fk_veterinario_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
+
+-- impede duplicidade direto no banco (o PHP já checa, isto é a segunda barreira)
+
+ALTER TABLE `veterinario`
+  ADD UNIQUE KEY `uq_veterinario_crmv` (`crmv`);
+
+ALTER TABLE `ongs`       
+  ADD UNIQUE KEY `uq_ongs_cnpj` (`cnpj`);
+
+ALTER TABLE `ongs`
+  ADD UNIQUE KEY `uq_ongs_protetor` (`id_protetor`);
+  
+ALTER TABLE `protetor`
+  ADD UNIQUE KEY `uq_protetor_cpf` (`cpf`);
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
