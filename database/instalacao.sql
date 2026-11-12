@@ -775,3 +775,36 @@ CREATE TABLE plano_veterinario (
         FOREIGN KEY (id_veterinario) REFERENCES veterinario (id_veterinario)
         ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Demo accounts. The shared password is documented in README.md.
+INSERT INTO usuario (id, nome, status_conta, telefone, email, senha, data_criacao_conta)
+VALUES
+    (17, 'Adotante de demonstracao', 'Ativa', '41990000017', 'adotante.demo@adotai.test', '$2y$10$ldSqWksBrYftp7DqX6MmeOrSFBAPjOJYnPsuq9jQPKfCBXwjWXGbS', CURRENT_DATE),
+    (18, 'Protetor de demonstracao', 'Ativa', '41990000018', 'protetor.demo@adotai.test', '$2y$10$ldSqWksBrYftp7DqX6MmeOrSFBAPjOJYnPsuq9jQPKfCBXwjWXGbS', CURRENT_DATE),
+    (19, 'Veterinario de demonstracao', 'Ativa', '41990000019', 'veterinario.demo@adotai.test', '$2y$10$ldSqWksBrYftp7DqX6MmeOrSFBAPjOJYnPsuq9jQPKfCBXwjWXGbS', CURRENT_DATE),
+    (20, 'Administrador de demonstracao', 'Ativa', '41990000020', 'admin.demo@adotai.test', '$2y$10$ldSqWksBrYftp7DqX6MmeOrSFBAPjOJYnPsuq9jQPKfCBXwjWXGbS', CURRENT_DATE);
+
+INSERT INTO adotante (id_usuario) VALUES (17);
+
+INSERT INTO protetor (
+    id_usuario, status_aprovacao, nome_organizacao, descricao,
+    email_contato, telefone_contato, cidade, uf, tipo_perfil, canal_contato
+) VALUES (
+    18, 'Aprovado', 'Protetor de demonstracao',
+    'Perfil de demonstracao para testar o cadastro e o gerenciamento de animais.',
+    'protetor.demo@adotai.test', '41990000018', 'Curitiba', 'PR', 'ong', 'whatsapp'
+);
+
+INSERT INTO veterinario (
+    id_usuario, nome, crmv, especialidade, email, telefone, cidade, uf,
+    status, descricao, endereco, servicos, valor_consulta, canal_contato
+) VALUES (
+    19, 'Veterinario de demonstracao', 'CRMV-PR-DEMO-001',
+    'Clinica geral', 'veterinario.demo@adotai.test', '41990000019',
+    'Curitiba', 'PR', 'Ativo',
+    'Perfil de demonstracao para testar o painel veterinario.',
+    'Endereco de demonstracao', 'Atendimento veterinario', 100.00, 'whatsapp'
+);
+
+INSERT INTO admin (id_usuario, nivel_acesso, data_concessao)
+VALUES (20, 'A', CURRENT_DATE);

@@ -14,6 +14,19 @@ Requisitos: PHP 8+ com as extensões `mysqli` e `fileinfo`, e MySQL/MariaDB.
 
 Importe `database/instalacao.sql` apenas uma vez e somente para uma instalação nova. Esse arquivo já cria as tabelas e aplica todas as alterações necessárias; não é preciso executar os outros arquivos de migração.
 
+## Contas de teste
+
+O instalador cria uma conta de cada perfil. Todas usam a senha `Adotai@Teste2026!`:
+
+| Perfil | E-mail |
+|---|---|
+| Adotante | `adotante.demo@adotai.test` |
+| Protetor aprovado | `protetor.demo@adotai.test` |
+| Veterinário | `veterinario.demo@adotai.test` |
+| Administrador | `admin.demo@adotai.test` |
+
+Use essas contas apenas na instalação local de demonstração. O administrador de teste tem acesso total; troque as senhas e remova essas contas antes de publicar o site em produção.
+
 ## Rodar sem Apache
 
 Com PHP e MySQL instalados, importe o banco no Prompt de Comando do Windows, a partir da raiz do projeto:
