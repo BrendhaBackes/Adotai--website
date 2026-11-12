@@ -1,0 +1,309 @@
+/* =====================================================
+   Header do usuário logado (criado por scripts/header_auth.js)
+   Usa as variáveis de cor definidas em index_style.css
+   ===================================================== */
+
+/* ---------- Desktop: "Olá, Nome" + ícone com dropdown ---------- */
+.user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-saudacao {
+    color: var(--texto);
+    white-space: nowrap;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-btn {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 0;
+    border-radius: 100%;
+    background-color: var(--laranja);
+    cursor: pointer;
+}
+
+.user-btn img {
+    display: block;
+    height: 30px;
+    width: auto;
+}
+
+.user-btn:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    z-index: 20;
+
+    min-width: 180px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+
+    background-color: var(--creme);
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.user-menu.aberto .user-dropdown { display: block; }
+
+.user-dropdown a {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--texto);
+    text-decoration: none;
+}
+
+.user-dropdown a:hover,
+.user-dropdown a:focus-visible {
+    background-color: var(--pessego);
+    outline: none;
+}
+
+/* ---------- Celular/tablet (mesmo ponto do hambúrguer): ----------
+   o bloco entra no menu hambúrguer, com a saudação e as duas opções
+   listadas como os demais links.                                    */
+@media (max-width: 900px) {
+    .user-menu {
+        display: none;               /* só aparece com o hambúrguer aberto */
+        order: 4;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    #menu-toggle:checked ~ .user-menu { display: flex; }
+
+    .user-btn { display: none; }
+
+    .user-saudacao {
+        max-width: none;
+        padding: 14px 4px;
+        border-bottom: 1px solid var(--pessego);
+    }
+
+    .user-dropdown {
+        display: block;
+        position: static;
+        min-width: 0;
+        padding: 0;
+        background: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .user-dropdown a {
+        padding: 14px 4px;
+        border-radius: 0;
+        border-bottom: 1px solid var(--pessego);
+    }
+}
+
+/* =====================================================
+   Lista de interesses (ícone de coração + dropdown)
+   ===================================================== */
+.interesses-wrap { position: relative; }
+
+.interesses-btn {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 0;
+    border-radius: 100%;
+    background-color: var(--laranja);
+    color: var(--creme);
+    cursor: pointer;
+}
+
+.interesses-btn:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+/* só aparece no menu hambúrguer (celular) */
+.interesses-btn-texto { display: none; }
+
+/* contador de animais na lista */
+.interesses-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+
+    display: grid;
+    place-items: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 10px;
+
+    background-color: var(--escuro);
+    color: var(--creme);
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.interesses-badge[hidden] { display: none; }
+
+/* pulso quando um animal é adicionado */
+.interesses-btn.pulsar { animation: interesses-pulso 0.6s ease; }
+
+@keyframes interesses-pulso {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.25); }
+    100% { transform: scale(1); }
+}
+
+.interesses-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    z-index: 20;
+
+    width: min(320px, 86vw);
+    padding: 8px;
+
+    background-color: var(--creme);
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.interesses-wrap.aberto .interesses-dropdown { display: block; }
+
+.interesses-titulo {
+    margin: 6px 8px 8px;
+    font-size: 0.95rem;
+}
+
+.interesses-lista {
+    max-height: 320px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-y: auto;
+}
+
+.interesse-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.interesse-item:hover { background-color: var(--pessego); }
+
+.interesse-foto {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.interesse-texto {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.interesse-nome {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.interesse-sub {
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: #6b7280;
+}
+
+.interesses-vazio {
+    padding: 12px 8px;
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: #4b5563;
+}
+
+.interesses-rodape {
+    display: block;
+    margin-top: 6px;
+    padding: 10px 8px 4px;
+    border-top: 1px solid var(--pessego);
+    color: var(--laranja);
+    font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+}
+
+.interesses-rodape:hover { text-decoration: underline; }
+
+/* ---------- Celular/tablet: vira uma linha do menu hambúrguer ---------- */
+@media (max-width: 900px) {
+    .interesses-wrap { position: static; }
+
+    .interesses-btn {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        width: 100%;
+        height: auto;
+        padding: 14px 4px;
+        border-radius: 0;
+        border-bottom: 1px solid var(--pessego);
+        background: none;
+        color: var(--texto);
+        font: inherit;
+        text-align: left;
+    }
+
+    .interesses-btn svg {
+        width: 22px;
+        height: 22px;
+        color: var(--laranja);
+    }
+
+    .interesses-btn-texto { display: inline; }
+
+    .interesses-badge {
+        position: static;
+        margin-left: auto;
+    }
+
+    .interesses-dropdown {
+        position: static;
+        width: auto;
+        padding: 4px 0 8px;
+        background: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .interesses-titulo { display: none; }   /* o botão já diz "Lista de interesses" */
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .interesses-btn.pulsar { animation: none; }
+}

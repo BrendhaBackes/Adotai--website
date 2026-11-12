@@ -1,0 +1,647 @@
+/* =========================================
+   PAINEL DO PROTETOR
+   Usa as variáveis de cor definidas em index_style.css
+   (--laranja, --creme, --escuro, --pessego, --marrom, --texto, --pad-x)
+   Carregue DEPOIS do index_style.css.
+   ========================================= */
+
+/* O atributo [hidden] precisa ganhar de qualquer "display" definido abaixo */
+[hidden] { display: none !important; }
+
+/* ---------- Estrutura: menu lateral + conteúdo ---------- */
+#protetor-painel {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(24px, 4vw, 48px) var(--pad-x);
+    font-family: 'Inter', sans-serif;
+}
+
+/* ---------- Menu lateral ---------- */
+.painel-lateral {
+    position: sticky;
+    top: 16px;
+    padding: 20px 16px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 3px 10px 1px rgba(144, 145, 145, 0.55);
+}
+
+.painel-perfil {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 4px 16px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid var(--pessego);
+}
+
+.painel-avatar {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 100%;
+    background-color: var(--laranja);
+}
+
+.painel-avatar img {
+    display: block;
+    height: 28px;
+    width: auto;
+}
+
+.painel-perfil p { margin: 0; }
+
+.painel-perfil-rotulo {
+    font-size: 0.75rem;
+    color: var(--marrom);
+}
+
+.painel-perfil-nome {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+}
+
+.painel-abas {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.painel-aba {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 14px;
+    background-color: transparent;
+    color: var(--texto);
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.painel-aba svg { flex-shrink: 0; }
+
+.painel-aba:hover {
+    background-color: var(--pessego);
+}
+
+.painel-aba[aria-selected="true"] {
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+.painel-aba:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+/* ---------- Cartão de conteúdo ---------- */
+.painel-card {
+    padding: clamp(20px, 4vw, 44px);
+    background-color: #fff;
+    border-radius: 24px;
+    box-shadow: 0 6px 24px 2px rgba(109, 76, 61, 0.25);
+}
+
+.painel-titulo { margin-bottom: 24px; }
+
+.painel-titulo h1 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.15;
+}
+
+.painel-titulo p {
+    margin: 6px 0 0;
+    color: var(--marrom);
+}
+
+.obrigatorio {
+    color: var(--laranja);
+    font-weight: 700;
+}
+
+/* ---------- Avisos (sucesso / erro) ---------- */
+.aviso {
+    margin: 0 0 22px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.aviso-erro {
+    border: 1px solid #e5a3a3;
+    background-color: #fdecec;
+    color: #8a1f1f;
+}
+
+.aviso-sucesso {
+    border: 1px solid #9fd3ab;
+    background-color: #e9f6ec;
+    color: #1e5b2e;
+}
+
+/* ---------- Seções do formulário ---------- */
+#animal-form { counter-reset: secao; }
+
+.form-secao {
+    counter-increment: secao;
+    min-width: 0;
+    margin: 0 0 12px;
+    padding: 0 0 12px;
+    border: 0;
+    border-bottom: 2px solid var(--pessego);
+}
+
+.form-secao > legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* bolinha laranja numerada antes do título de cada seção */
+.form-secao > legend::before {
+    content: counter(secao);
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 100%;
+    background-color: var(--laranja);
+    color: #fff;
+    font-size: 0.85rem;
+}
+
+/* ---------- Campos (mesmo visual do login / cadastro) ---------- */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.campo label,
+.campo-grupo > legend {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+    width: 100%;
+    padding: 13px 14px;
+    font: inherit;
+    color: var(--texto);
+    background-color: var(--creme);
+    border: 2px solid var(--pessego);
+    border-radius: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.5;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+    color: #9a8a82;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+    outline: none;
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 4px rgba(232, 138, 32, 0.22);
+}
+
+/* Campo com erro (classe aplicada pelo JS) */
+.campo.tem-erro input,
+.campo.tem-erro select,
+.campo.tem-erro textarea {
+    border-color: #d46a6a;
+}
+
+.campo-erro {
+    margin: 0;
+    color: #8a1f1f;
+    font-size: 0.82rem;
+}
+
+.campo-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.contador {
+    margin-left: auto;
+    color: var(--marrom);
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.contador.no-limite { color: #8a1f1f; font-weight: 600; }
+
+.campos-linha {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+}
+
+/* ---------- Idade: anos + meses ---------- */
+.idade-grupo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.input-sufixo { position: relative; }
+
+.input-sufixo input { padding-right: 70px; }
+
+.input-sufixo span {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    color: var(--marrom);
+    font-size: 0.85rem;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+/* ---------- Foto do animal ---------- */
+.foto-upload {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.foto-previa {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 180px;
+    height: 180px;
+    overflow: hidden;
+    padding: 12px;
+    text-align: center;
+    color: var(--marrom);
+    font-size: 0.8rem;
+    background-color: var(--creme);
+    border: 2px dashed var(--pessego);
+    border-radius: 16px;
+}
+
+.foto-previa.tem-foto {
+    padding: 0;
+    border-style: solid;
+}
+
+.foto-previa img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.foto-controles {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.foto-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.btn-foto {
+    display: inline-block;
+    padding: 11px 20px;
+    font-size: 0.95rem;
+}
+
+.foto-input:focus-visible + .btn-foto {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+.foto-remover {
+    padding: 4px 2px;
+    border: 0;
+    background: transparent;
+    color: var(--laranja);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.foto-remover:hover { text-decoration: underline; }
+
+.campo.tem-erro .foto-previa { border-color: #d46a6a; }
+
+.campo-ajuda {
+    margin: 0;
+    color: var(--marrom);
+    font-size: 0.8rem;
+}
+
+/* ---------- Grupos de opções (pills) ---------- */
+.campo-grupo {
+    min-width: 0;
+    margin: 0 0 18px;
+    padding: 0;
+    border: 0;
+}
+
+.campo-grupo > legend {
+    padding: 0;
+    margin-bottom: 8px;
+}
+
+.pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.pill {
+    position: relative;
+    cursor: pointer;
+}
+
+/* O radio fica invisível, mas continua acessível pelo teclado */
+.pill input,
+.opcao-check input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+
+.pill span {
+    display: inline-block;
+    padding: 9px 18px;
+    border-radius: 20px;
+    background-color: var(--pessego);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pill:hover span { background-color: #f6d9b0; }
+
+.pill input:checked + span {
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+.pill input:focus-visible + span,
+.opcao-check input:focus-visible + .opcao-check-conteudo {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+/* ---------- Castrado / vacinado / vermifugado ---------- */
+.opcoes-check {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.opcao-check {
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+
+.opcao-check-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    height: 100%;
+    padding: 14px 14px 14px 46px;
+    background-color: var(--creme);
+    border: 2px solid var(--pessego);
+    border-radius: 14px;
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+/* "caixinha" marcável desenhada em CSS */
+.opcao-check-conteudo::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--marrom);
+    border-radius: 6px;
+    background-color: #fff;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.opcao-check-conteudo::after {
+    content: "";
+    position: absolute;
+    left: 21px;
+    top: 20px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+}
+
+.opcao-check-conteudo strong { font-size: 0.92rem; }
+
+.opcao-check-conteudo small {
+    font-size: 0.75rem;
+    color: var(--marrom);
+}
+
+.opcao-check:hover .opcao-check-conteudo { border-color: var(--laranja); }
+
+.opcao-check input:checked + .opcao-check-conteudo {
+    background-color: var(--pessego);
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 3px rgba(232, 138, 32, 0.22);
+}
+
+.opcao-check input:checked + .opcao-check-conteudo::before {
+    background-color: var(--laranja);
+    border-color: var(--laranja);
+}
+
+.opcao-check input:checked + .opcao-check-conteudo::after { opacity: 1; }
+
+/* ---------- Botões ---------- */
+.form-acoes {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-salvar,
+.btn-secundario {
+    padding: 14px 24px;
+    border-radius: 15px;
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.1s, background-color 0.2s;
+}
+
+.btn-salvar {
+    border: 2px solid var(--laranja);
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+.btn-salvar:hover:not(:disabled)  { filter: brightness(0.93); }
+.btn-salvar:active:not(:disabled) { transform: scale(0.98); }
+
+.btn-salvar:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.btn-secundario {
+    border: 2px solid var(--escuro);
+    background-color: transparent;
+    color: var(--texto);
+}
+
+.btn-secundario:hover { background-color: var(--pessego); }
+
+.btn-salvar:focus-visible,
+.btn-secundario:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+/* ---------- Aba "Meus animais" ---------- */
+.vazio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 0;
+    text-align: center;
+}
+
+.vazio img {
+    width: min(180px, 60%);
+    height: auto;
+    margin-bottom: 16px;
+    border-radius: 20px;
+}
+
+.vazio h2 {
+    margin: 0 0 6px;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.25rem;
+}
+
+.vazio p {
+    margin: 0 0 20px;
+    color: var(--marrom);
+}
+
+/* =========================================
+   TABLET (até 900px): o menu lateral vira
+   uma barra de abas no topo
+   ========================================= */
+@media (max-width: 900px) {
+    #protetor-painel {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .painel-lateral {
+        position: static;
+        padding: 14px;
+    }
+
+    .painel-perfil {
+        padding-bottom: 12px;
+        margin-bottom: 10px;
+    }
+
+    .painel-abas {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .painel-aba {
+        justify-content: center;
+        flex: 1;
+        padding: 11px 12px;
+        text-align: center;
+    }
+
+    .opcoes-check { grid-template-columns: 1fr; }
+}
+
+/* =========================================
+   CELULAR (até 560px)
+   ========================================= */
+@media (max-width: 560px) {
+    .campos-linha { grid-template-columns: 1fr; }
+
+    .foto-upload {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .foto-previa {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+    }
+
+    .painel-aba svg { display: none; }
+    .painel-aba { font-size: 0.88rem; }
+
+    .form-acoes { flex-direction: column-reverse; }
+
+    .btn-salvar,
+    .btn-secundario { width: 100%; }
+}

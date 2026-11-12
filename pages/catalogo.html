@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animais disponíveis | Adotaí</title>
     <link rel="stylesheet" href="../styles/index_style.css">
+    <link rel="stylesheet" href="../styles/catalogo_style.css">
+    <script src="../scripts/header_auth.js" defer></script>
+    <script src="../scripts/catalogo_handler.js" defer></script>
 </head>
 <body>
     <header>
@@ -22,6 +25,7 @@
             <a href="../index.html">Inicio</a>
             <a href="catalogo.html">Animais</a>
             <a href="#">Planos</a>
+            <a href="#">Veterinários</a>
             <a href="#footer-contato">Contato</a>
         </nav>
 
@@ -53,89 +57,14 @@
                     <input type="radio" name="animals" value="Filhotes" />
                     <span>Filhotes</span>
                 </label>
+                <label class="custom-radio">
+                    <input type="radio" name="animals" value="Outros" />
+                    <span>Outros</span>
+                </label>
             </div>
 
-            <div id="animal-card-list">
-                <article class="animal-card">
-                    <img src="../images/franky.jpeg" alt="Frank, cachorro macho">
-                    <div class="animal-title">
-                        <h2>Frank</h2>
-                        <span class="animal-sex">Macho</span>
-                    </div>
-                    <p>2 anos • Porte médio</p>
-                    <p>Dócil, Brincalhão e Carinhoso</p>
-                </article>
-
-                <article class="animal-card">
-                    <img src="../images/franky.jpeg" alt="Frank, cachorro macho">
-                    <div class="animal-title">
-                        <h2>Frank</h2>
-                        <span class="animal-sex">Macho</span>
-                    </div>
-                    <p>2 anos • Porte médio</p>
-                    <p>Dócil, Brincalhão e Carinhoso</p>
-                </article>
-               
-                <article class="animal-card">
-                    <img src="../images/franky.jpeg" alt="Frank, cachorro macho">
-                    <div class="animal-title">
-                        <h2>Frank</h2>
-                        <span class="animal-sex">Macho</span>
-                    </div>
-                    <p>2 anos • Porte médio</p>
-                    <p>Dócil, Brincalhão e Carinhoso</p>
-                </article>
-
-                <article class="animal-card">
-                    <img src="../images/franky.jpeg" alt="Frank, cachorro macho">
-                    <div class="animal-title">
-                        <h2>Frank</h2>
-                        <span class="animal-sex">Macho</span>
-                    </div>
-                    <p>2 anos • Porte médio</p>
-                    <p>Dócil, Brincalhão e Carinhoso</p>
-                </article>
-
-                <article class="animal-card">
-                    <img src="../images/franky.jpeg" alt="Frank, cachorro macho">
-                    <div class="animal-title">
-                        <h2>Frank</h2>
-                        <span class="animal-sex">Macho</span>
-                    </div>
-                    <p>2 anos • Porte médio</p>
-                    <p>Dócil, Brincalhão e Carinhoso</p>
-                </article>
-
-                <article class="animal-card">
-                    <img src="../images/franky.jpeg" alt="Frank, cachorro macho">
-                    <div class="animal-title">
-                        <h2>Frank</h2>
-                        <span class="animal-sex">Macho</span>
-                    </div>
-                    <p>2 anos • Porte médio</p>
-                    <p>Dócil, Brincalhão e Carinhoso</p>
-                </article>
-
-                <article class="animal-card">
-                    <img src="../images/franky.jpeg" alt="Frank, cachorro macho">
-                    <div class="animal-title">
-                        <h2>Frank</h2>
-                        <span class="animal-sex">Macho</span>
-                    </div>
-                    <p>2 anos • Porte médio</p>
-                    <p>Dócil, Brincalhão e Carinhoso</p>
-                </article>
-
-                <article class="animal-card">
-                    <img src="../images/franky.jpeg" alt="Frank, cachorro macho">
-                    <div class="animal-title">
-                        <h2>Frank</h2>
-                        <span class="animal-sex">Macho</span>
-                    </div>
-                    <p>2 anos • Porte médio</p>
-                    <p>Dócil, Brincalhão e Carinhoso</p>
-                </article>
-            </div>
+            <div id="animal-card-list"></div>
+            <p id="catalogo-aviso" class="catalogo-aviso" role="status" hidden></p>
         </section>
     </main>
 

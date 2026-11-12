@@ -1,0 +1,708 @@
+/* =========================================
+   PAINEL ADMINISTRATIVO
+   Usa as variáveis de cor definidas em index_style.css
+   (--laranja, --creme, --escuro, --pessego, --marrom, --texto, --pad-x)
+   Carregue DEPOIS do index_style.css.
+   ========================================= */
+
+/* O atributo [hidden] precisa ganhar de qualquer "display" definido abaixo */
+[hidden] { display: none !important; }
+
+/* ---------- Estrutura: menu lateral + conteúdo ---------- */
+#admin-painel {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(24px, 4vw, 48px) var(--pad-x);
+    font-family: 'Inter', sans-serif;
+}
+
+.painel-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+}
+
+/* ---------- Menu lateral ---------- */
+.painel-lateral {
+    position: sticky;
+    top: 16px;
+    padding: 20px 16px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 3px 10px 1px rgba(144, 145, 145, 0.55);
+}
+
+.painel-perfil {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 4px 16px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid var(--pessego);
+}
+
+.painel-avatar {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 100%;
+    background-color: var(--laranja);
+}
+
+.painel-avatar img { display: block; height: 28px; width: auto; }
+
+.painel-perfil p { margin: 0; }
+
+.painel-perfil-rotulo {
+    font-size: 0.75rem;
+    color: var(--marrom);
+}
+
+.painel-perfil-nome {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+}
+
+.painel-abas {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.painel-aba {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 14px;
+    background-color: transparent;
+    color: var(--texto);
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.painel-aba svg { flex-shrink: 0; }
+.painel-aba-texto { flex: 1; }
+
+.painel-aba:hover { background-color: var(--pessego); }
+
+.painel-aba[aria-selected="true"] {
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+.painel-aba:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+/* Bolinha com a quantidade de pendências */
+.painel-aba-badge {
+    min-width: 22px;
+    padding: 1px 7px;
+    border-radius: 20px;
+    background-color: var(--laranja);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.painel-aba[aria-selected="true"] .painel-aba-badge {
+    background-color: #fff;
+    color: var(--laranja);
+}
+
+/* ---------- Cartão de conteúdo ---------- */
+.painel-card {
+    padding: clamp(20px, 4vw, 44px);
+    background-color: #fff;
+    border-radius: 24px;
+    box-shadow: 0 6px 24px 2px rgba(109, 76, 61, 0.25);
+}
+
+.painel-titulo { margin-bottom: 24px; }
+
+.painel-titulo h1 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.15;
+}
+
+.painel-titulo p {
+    margin: 6px 0 0;
+    color: var(--marrom);
+}
+
+/* ---------- Avisos ---------- */
+.aviso {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.aviso.sucesso {
+    border: 1px solid #9fd3ab;
+    background-color: #e9f6ec;
+    color: #1e5b2e;
+}
+
+.aviso.erro {
+    border: 1px solid #e5a3a3;
+    background-color: #fdecec;
+    color: #8a1f1f;
+}
+
+/* ---------- Visão geral: números ---------- */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
+    background-color: var(--creme);
+    border: 2px solid var(--pessego);
+    border-radius: 16px;
+    font: inherit;
+    color: var(--texto);
+    text-align: left;
+}
+
+.stat strong {
+    font-family: "Poppins", sans-serif;
+    font-size: 2.2rem;
+    line-height: 1;
+}
+
+.stat span {
+    font-size: 0.9rem;
+    color: var(--marrom);
+}
+
+/* Os que levam a uma aba são clicáveis */
+.stat-destaque {
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.stat-destaque strong { color: var(--laranja); }
+
+.stat-destaque:hover {
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 3px rgba(232, 138, 32, 0.22);
+}
+
+.stat-destaque:active { transform: scale(0.98); }
+
+.stat-destaque:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+/* ---------- Barra de filtros ---------- */
+.barra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 16px;
+    margin-bottom: 20px;
+}
+
+.pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.pill {
+    position: relative;
+    cursor: pointer;
+}
+
+/* O radio fica invisível, mas continua acessível pelo teclado */
+.pill input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+
+.pill span {
+    display: inline-block;
+    padding: 9px 18px;
+    border-radius: 20px;
+    background-color: var(--pessego);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pill:hover span { background-color: #f6d9b0; }
+
+.pill input:checked + span {
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+.pill input:focus-visible + span {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+.busca {
+    width: min(320px, 100%);
+    padding: 11px 14px;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--texto);
+    background-color: var(--creme);
+    border: 2px solid var(--pessego);
+    border-radius: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.busca:focus {
+    outline: none;
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 4px rgba(232, 138, 32, 0.22);
+}
+
+/* ---------- Listas ---------- */
+.lista {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.lista-aviso {
+    margin: 0 0 4px;
+    padding: 28px 12px;
+    text-align: center;
+    color: var(--marrom);
+}
+
+.item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px;
+    background-color: #fff;
+    border: 2px solid var(--pessego);
+    border-radius: 16px;
+}
+
+.item-foto,
+.item-inicial {
+    flex-shrink: 0;
+    width: 84px;
+    height: 84px;
+    border-radius: 14px;
+    object-fit: cover;
+}
+
+.item-inicial {
+    display: grid;
+    place-items: center;
+    background-color: var(--pessego);
+    color: var(--marrom);
+    font-family: "Poppins", sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.item-info { min-width: 0; }
+
+.item-titulo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin: 0 0 4px;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.item-linha {
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+    color: var(--marrom);
+    overflow-wrap: anywhere;
+}
+
+.item-texto {
+    margin: 8px 0 0;
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.item-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* Chamados de suporte ocupam a largura toda (o campo de resposta fica embaixo) */
+.item-suporte { grid-template-columns: minmax(0, 1fr); }
+
+.resposta-box {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background-color: #e9f6ec;
+    color: #1e5b2e;
+    font-size: 0.9rem;
+    white-space: pre-line;
+}
+
+.resposta-box strong { display: block; margin-bottom: 2px; }
+
+.resposta-form { margin-top: 12px; }
+
+.resposta-form .campo { margin-bottom: 10px; }
+
+/* ---------- Selos (status) ---------- */
+.selo {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.selo-pendente    { background-color: var(--pessego); color: #8a4b00; }
+.selo-aprovado    { background-color: #e9f6ec; color: #1e5b2e; }
+.selo-recusado    { background-color: #fdecec; color: #8a1f1f; }
+.selo-disponivel  { background-color: #e6f0fb; color: #1d4a7a; }
+.selo-em-processo { background-color: #fff4cc; color: #7a5b00; }
+.selo-adotado     { background-color: #ececec; color: #444; }
+.selo-neutro      { background-color: var(--creme); color: var(--marrom); }
+
+/* ---------- Botões ---------- */
+.btn-salvar,
+.btn-secundario,
+.btn-perigo,
+.btn-mini {
+    border-radius: 12px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.1s, background-color 0.2s;
+}
+
+.btn-salvar,
+.btn-secundario,
+.btn-perigo {
+    padding: 12px 22px;
+    font-size: 0.95rem;
+    border: 2px solid transparent;
+}
+
+.btn-salvar { background-color: var(--laranja); border-color: var(--laranja); color: #fff; }
+
+.btn-secundario { background-color: transparent; border-color: var(--escuro); color: var(--texto); }
+.btn-secundario:hover { background-color: var(--pessego); }
+
+.btn-perigo { background-color: transparent; border-color: #c0504d; color: #8a1f1f; }
+.btn-perigo:hover { background-color: #fdecec; }
+
+/* Botões pequenos dentro das listas */
+.btn-mini {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    border: 2px solid var(--escuro);
+    background-color: transparent;
+    color: var(--texto);
+}
+
+.btn-mini:hover { background-color: var(--pessego); }
+
+.btn-mini.aprovar { background-color: var(--laranja); border-color: var(--laranja); color: #fff; }
+.btn-mini.aprovar:hover { background-color: var(--laranja); filter: brightness(0.93); }
+
+.btn-mini.recusar { border-color: #c0504d; color: #8a1f1f; }
+.btn-mini.recusar:hover { background-color: #fdecec; }
+
+.btn-salvar:hover:not(:disabled) { filter: brightness(0.93); }
+.btn-salvar:active:not(:disabled),
+.btn-mini:active:not(:disabled) { transform: scale(0.97); }
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.btn-salvar:focus-visible,
+.btn-secundario:focus-visible,
+.btn-perigo:focus-visible,
+.btn-mini:focus-visible,
+.janela-fechar:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+/* ---------- Campos (mesmo visual do login / cadastro) ---------- */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.campo label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.campo-dica {
+    font-weight: 400;
+    color: var(--marrom);
+}
+
+.campo textarea {
+    width: 100%;
+    padding: 13px 14px;
+    font: inherit;
+    color: var(--texto);
+    background-color: var(--creme);
+    border: 2px solid var(--pessego);
+    border-radius: 12px;
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo textarea::placeholder { color: #9a8a82; }
+
+.campo textarea:focus {
+    outline: none;
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 4px rgba(232, 138, 32, 0.22);
+}
+
+.campo.tem-erro textarea { border-color: #d46a6a; }
+
+.campo-erro {
+    margin: 0;
+    color: #8a1f1f;
+    font-size: 0.82rem;
+}
+
+/* ---------- Janelas (<dialog>) ---------- */
+.janela {
+    width: min(640px, calc(100% - 32px));
+    max-height: calc(100vh - 32px);
+    padding: 0;
+    border: 0;
+    border-radius: 24px;
+    background-color: #fff;
+    color: var(--texto);
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 10px 40px rgba(37, 28, 25, 0.35);
+    overflow: hidden;
+}
+
+.janela[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.janela::backdrop { background-color: rgba(37, 28, 25, 0.55); }
+
+.janela-pequena { width: min(440px, calc(100% - 32px)); }
+
+.janela-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 18px 24px 12px;
+}
+
+.janela-topo h2 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.4rem;
+}
+
+.janela-fechar {
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 100%;
+    background-color: var(--creme);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.janela-fechar:hover { background-color: var(--pessego); }
+
+.janela-corpo {
+    padding: 8px 24px 16px;
+    overflow-y: auto;
+}
+
+.janela-pequena .janela-corpo { padding-top: 24px; }
+
+.janela-corpo h2 {
+    margin: 0 0 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.3rem;
+}
+
+.janela-corpo p { margin: 0; }
+
+.janela-foto {
+    display: block;
+    width: 100%;
+    max-height: 280px;
+    margin-bottom: 14px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.janela-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.detalhes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 16px;
+    margin: 0 0 20px;
+}
+
+.detalhes div { min-width: 0; }
+
+.detalhes .largo { grid-column: 1 / -1; }
+
+.detalhes dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+.detalhes dd {
+    margin: 2px 0 0;
+    font-size: 0.92rem;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.janela-acoes {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 24px 20px;
+    border-top: 2px solid var(--pessego);
+}
+
+/* =========================================
+   TABLET (até 900px): o menu lateral vira
+   uma barra de abas no topo
+   ========================================= */
+@media (max-width: 900px) {
+    #admin-painel {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .painel-lateral {
+        position: static;
+        padding: 14px;
+    }
+
+    .painel-perfil {
+        padding-bottom: 12px;
+        margin-bottom: 10px;
+    }
+
+    .painel-abas {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .painel-aba {
+        width: auto;
+        flex: 1 1 140px;
+        justify-content: center;
+        padding: 11px 12px;
+    }
+
+    .painel-aba-texto { flex: 0 1 auto; }
+
+    /* itens das listas: ações descem para baixo das informações */
+    .item { grid-template-columns: auto minmax(0, 1fr); }
+
+    .item-acoes {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+}
+
+/* =========================================
+   CELULAR (até 560px)
+   ========================================= */
+@media (max-width: 560px) {
+    .painel-aba svg { display: none; }
+    .painel-aba { font-size: 0.88rem; flex-basis: 45%; }
+
+    .busca { width: 100%; }
+
+    .item-foto,
+    .item-inicial { width: 64px; height: 64px; }
+
+    .item-acoes .btn-mini { flex: 1; }
+
+    .detalhes { grid-template-columns: 1fr; }
+
+    .janela-acoes { flex-direction: column-reverse; }
+    .janela-acoes button { width: 100%; }
+}
+
+/* Aviso das ações fica visível mesmo com a página rolada */
+.aviso {
+    position: sticky;
+    top: 12px;
+    z-index: 5;
+    box-shadow: 0 4px 14px rgba(37, 28, 25, 0.18);
+}
