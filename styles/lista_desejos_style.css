@@ -1,0 +1,119 @@
+/* =========================================
+   LISTA DE DESEJOS (área do adotante)
+   Complementa protetor_painel_style.css, que já traz o layout do painel,
+   o card .animal-item, os selos, as chips e a área .animal-gerenciar.
+   Carregue DEPOIS do protetor_painel_style.css.
+   ========================================= */
+
+/* Botão com cara de .btn-salvar, mas que é um link */
+.btn-link {
+    display: inline-block;
+    text-decoration: none;
+}
+
+/* ---------- Área de contato com o protetor ---------- */
+.desejo-contato {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    margin-top: 6px;
+    padding-top: 12px;
+    border-top: 2px solid var(--pessego);
+}
+
+.desejo-protetor {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    font-size: 0.85rem;
+    color: var(--marrom);
+}
+
+.desejo-protetor strong { color: var(--texto); }
+
+/* Botão "Entrar em Contato" (é um link <a> que abre o WhatsApp) */
+.btn-contato {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border: 2px solid var(--laranja);
+    border-radius: 12px;
+    background-color: var(--laranja);
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+.btn-contato svg { flex-shrink: 0; }
+
+.btn-contato:hover { filter: brightness(0.93); }
+.btn-contato:active { transform: scale(0.98); }
+
+.btn-contato:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+}
+
+/* Indisponível (animal já adotado ou protetor sem telefone) */
+.btn-contato:disabled,
+.btn-contato[aria-disabled="true"] {
+    border-color: #d1d5db;
+    background-color: #d1d5db;
+    color: #6b7280;
+    cursor: not-allowed;
+    filter: none;
+    transform: none;
+}
+
+/* =========================================
+   TEXTOS LONGOS SEM QUEBRAR O CARD
+   Limites do cadastro do animal: nome 50, espécie 30, raça/cor 80,
+   condição de saúde 500, descrição 1000 caracteres.
+   ========================================= */
+#desejos-lista .animal-item,
+#desejos-lista .animal-info,
+#desejos-lista .animal-topo,
+#desejos-lista .animal-bloco,
+#desejos-lista .animal-chips { min-width: 0; }
+
+#desejos-lista .animal-chips { max-width: 100%; }
+
+#desejos-lista .animal-chip {
+    min-width: 0;
+    max-width: 100%;
+    padding: 4px 12px;
+    border-radius: 14px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+#desejos-lista .animal-nome,
+#desejos-lista .animal-detalhes,
+#desejos-lista .animal-texto,
+#desejos-lista .desejo-protetor { overflow-wrap: anywhere; }
+
+#desejos-lista .selo { max-width: 100%; }
+
+@media (max-width: 560px) {
+    .btn-contato { width: 100%; }
+}
+
+/* =========================================
+   MENU LATERAL: atalhos entre as páginas da área do usuário
+   Os itens são links (<a class="painel-aba">); o da página atual leva aria-current="page".
+   ========================================= */
+a.painel-aba { text-decoration: none; }
+
+.painel-aba[aria-current="page"] {
+    background-color: var(--laranja);
+    color: #fff;
+}

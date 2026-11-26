@@ -29,15 +29,15 @@
             { texto: 'Painel',            caminho: 'pages/admin_painel.html' },
         ],
         protetor: [
-            { texto: 'Cadastrar Animais', caminho: 'pages/protetor_painel.html' },
-            { texto: 'Meus Animais', caminho: 'pages/protetor_painel.html#animais' },
+            { texto: 'Painel Protetor', caminho: 'pages/protetor_painel.html' },
+            { texto: 'Meus Planos',     caminho: 'pages/meus_planos.html' },
         ],
         veterinario: [
-            { texto: 'Cadastrar Planos',  caminho: 'pages/cadastrar_plano.html' },
-            { texto: 'Meus Planos',  caminho: 'pages/cadastrar_plano.html#planos' },
+            { texto: 'Painel Veterinário',  caminho: 'pages/cadastrar_plano.html' },
         ],
         adotante: [
-            { texto: 'Meus Planos',  caminho: 'pages/meus_planos.html' },
+            { texto: 'Lista de Desejos', caminho: 'pages/lista_desejos.html' },
+            { texto: 'Meus Planos',      caminho: 'pages/meus_planos.html' },
         ],
     };
 

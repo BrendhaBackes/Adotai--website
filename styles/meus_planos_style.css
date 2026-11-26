@@ -91,3 +91,14 @@
 
 /* O ícone não pode ser espremido quando o texto ao lado é grande */
 #planos-lista .plano-icone { flex-shrink: 0; }
+
+/* =========================================
+   MENU LATERAL: atalhos entre as páginas da área do usuário
+   Os itens são links (<a class="painel-aba">); o da página atual leva aria-current="page".
+   ========================================= */
+a.painel-aba { text-decoration: none; }
+
+.painel-aba[aria-current="page"] {
+    background-color: var(--laranja);
+    color: #fff;
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de desejos | Adotaí</title>
+    <link rel="stylesheet" href="../styles/index_style.css">
+    <link rel="stylesheet" href="../styles/protetor_painel_style.css">
+    <link rel="stylesheet" href="../styles/lista_desejos_style.css">
+    <script src="../scripts/layout.js" defer></script>
+    <script src="../scripts/header_auth.js" defer></script>
+    <script src="../scripts/lista_desejos_handler.js" defer></script>
+</head>
+<body>
+    <header id="site-header"></header>
+
+    <!-- O id "protetor-painel" é mantido de propósito: é ele que dá o layout (menu lateral + conteúdo)
+         no protetor_painel_style.css, reaproveitado aqui para as telas ficarem idênticas. -->
+    <main id="protetor-painel">
+
+        <!-- ===== Menu lateral ===== -->
+        <aside class="painel-lateral">
+            <div class="painel-perfil">
+                <span class="painel-avatar" aria-hidden="true">
+                    <img src="../images/user_icon.png" alt="">
+                </span>
+                <div>
+                    <p class="painel-perfil-rotulo">Área do adotante</p>
+                    <p class="painel-perfil-nome" id="painel-nome">Bem-vindo(a)!</p>
+                </div>
+            </div>
+
+            <nav class="painel-abas" aria-label="Minha área">
+                <a class="painel-aba" id="menu-desejos" href="./lista_desejos.html" aria-current="page">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    <span>Lista de desejos</span>
+                </a>
+
+                <a class="painel-aba" id="menu-planos" href="./meus_planos.html">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>
+                    </svg>
+                    <span>Meus planos</span>
+                </a>
+            </nav>
+        </aside>
+
+        <div class="painel-conteudo">
+
+            <!-- O JS preenche a lista com os dados de api/lista_desejos.php:
+                 só os animais da lista do adotante logado. -->
+            <section class="painel-card" id="painel-desejos">
+
+                <div class="painel-titulo">
+                    <h1>Lista de desejos</h1>
+                    <p>Os animais em que você demonstrou interesse. Fale direto com o protetor pelo WhatsApp.</p>
+                </div>
+
+                <p class="meus-animais-resumo" id="desejos-resumo" hidden></p>
+
+                <div class="aviso aviso-erro aviso-acao" id="desejos-erro" role="alert" hidden>
+                    <span id="desejos-erro-texto"></span>
+                    <button type="button" class="btn-mini" id="desejos-tentar">Tentar de novo</button>
+                </div>
+
+                <p class="meus-animais-carregando" id="desejos-carregando" role="status" hidden>Carregando sua lista...</p>
+
+                <div class="animal-lista" id="desejos-lista"></div>
+
+                <div class="vazio" id="desejos-vazio" hidden>
+                    <img src="../images/pata_login.png" alt="">
+                    <h2>Sua lista de desejos está vazia</h2>
+                    <p>Clique em "Quero adotar" em um animal do catálogo e ele aparecerá aqui.</p>
+                    <a class="btn-salvar btn-link" href="./catalogo.html">Ver animais disponíveis</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer id="site-footer"></footer>
+</body>
+</html>

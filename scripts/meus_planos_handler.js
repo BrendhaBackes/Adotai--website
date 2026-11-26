@@ -58,6 +58,9 @@
             if (!dados.logado)              { location.replace(URL_LOGIN);  return; }
             if (!['adotante', 'protetor'].includes(dados.tipo)) { location.replace(URL_INICIO); return; }
 
+            // Lista de desejos é só do adotante: para o protetor o atalho não aparece
+            if (dados.tipo !== 'adotante') $('menu-desejos').hidden = true;
+
             if (dados.nome) $('painel-nome').textContent = dados.nome;
         })
         .catch(() => { /* sem resposta: mantém a página como está */ });
