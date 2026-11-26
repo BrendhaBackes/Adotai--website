@@ -1,0 +1,176 @@
+/* =====================================================
+   Catálogo de planos (pages/catalogo_planos.html)
+   Usa as variáveis e o layout base de index_style.css
+   (cores, filtros .radio-button-group, header e footer).
+   Os cards são gerados por catalogo_planos_handler.js.
+   ===================================================== */
+
+/* Link da página atual no menu */
+header nav a[aria-current="page"] {
+    border-bottom-color: var(--laranja);
+}
+
+/* ---------- Cabeçalho da seção ---------- */
+#planos-disponiveis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 var(--pad-x);
+    margin-top: 32px;
+}
+
+#planos-disponiveis h1 {
+    margin: 0 0 8px;
+    text-align: center;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.planos-intro {
+    max-width: 52ch;
+    margin: 0 0 24px;
+    text-align: center;
+    text-wrap: balance;
+    font-family: 'Inter', sans-serif;
+    color: var(--marrom);
+}
+
+/* Mensagens: carregando / vazio / erro */
+.planos-aviso {
+    margin: 40px 0 0;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ---------- Grade de cards ---------- */
+#plano-card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 32px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 40px;
+}
+
+/* ---------- Card do plano ---------- */
+.plano-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 22px 20px;
+    background-color: #fff;
+    font-family: 'Inter', sans-serif;
+    border: 2px solid transparent;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px 1px #909191c4;
+}
+
+/* plano em destaque: contorno laranja, como no painel do veterinário */
+.plano-card.em-destaque { border-color: var(--laranja); }
+
+.plano-card-topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+}
+
+.plano-card-topo h2 {
+    margin: 0;
+    padding-bottom: 3px;
+    font-size: 1.25rem;
+    line-height: 1.25;
+    flex: 1 1 100%;               /* o nome ocupa a linha; as etiquetas vão sempre abaixo */
+    overflow-wrap: anywhere;
+}
+
+/* etiquetas (mesmo desenho da etiqueta de sexo nos cards de animais) */
+.plano-selo {
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 5px 8px;
+    background-color: var(--pessego);
+    color: var(--marrom);
+    white-space: nowrap;
+}
+
+.plano-selo.destaque {
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+/* ---------- Preço ---------- */
+.plano-card-preco {
+    margin: 14px 0 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--laranja);
+}
+
+.plano-card-preco small {
+    margin-left: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+/* ---------- Descrição: no máximo 4 linhas, para os cards ficarem parecidos ---------- */
+.plano-card-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 12px 0 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: #4b5563;
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Benefícios ---------- */
+.plano-card-beneficios {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 16px 0 0;
+    border-top: 2px solid var(--pessego);
+    list-style: none;
+    font-size: 0.92rem;
+}
+
+.plano-card-beneficios li {
+    position: relative;
+    padding-left: 22px;
+    overflow-wrap: anywhere;
+}
+
+/* "visto" laranja antes de cada benefício (igual ao painel do veterinário) */
+.plano-card-beneficios li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0.3em;
+    width: 6px;
+    height: 11px;
+    border: solid var(--laranja);
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+}
+
+/* ---------- Quem oferece: sempre no pé do card ---------- */
+.plano-card-oferta {
+    margin: auto 0 0;
+    padding-top: 18px;
+    font-size: 0.85rem;
+    color: var(--marrom);
+}
+
+.plano-card-oferta strong { color: var(--texto); }
+
+@media (max-width: 640px) {
+    #plano-card-list { grid-template-columns: 1fr; gap: 24px; }
+}
