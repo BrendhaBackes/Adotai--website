@@ -16,11 +16,14 @@ try {
     // Só aparecem animais aprovados pelo admin.
     // A ordem segue o enum de status_adocao: Disponível, Em processo, Adotado.
     $resultado = $conn->query(
-        "SELECT id_animal, nome_animal, descricao, especie, raca, sexo, cidade, uf,
-                status_adocao, foto_url, idade_meses
-           FROM animal
-          WHERE status_aprovacao = 'Aprovado'
-          ORDER BY status_adocao, data_cadastro DESC, id_animal DESC"
+    "SELECT a.id_animal, a.nome_animal, a.descricao, a.especie, a.raca, a.sexo, a.cidade, a.uf,
+            a.status_adocao, a.foto_url, a.idade_meses,
+            COALESCE(NULLIF(p.telefone_contato, ''), NULLIF(u.telefone, '')) AS telefone_protetor
+       FROM animal a
+       LEFT JOIN protetor p ON p.id_protetor = a.id_protetor
+       LEFT JOIN usuario  u ON u.id          = p.id_usuario
+      WHERE a.status_aprovacao = 'Aprovado'
+      ORDER BY a.status_adocao, a.data_cadastro DESC, a.id_animal DESC"
     );
 
     $animais = [];

@@ -198,3 +198,22 @@ body.modal-aberto { overflow: hidden; }
     .animal-card { transition: none; }
     .animal-card:hover { transform: none; }
 }
+
+/* Telefone do protetor */
+.animal-card .animal-contato {
+    font-size: 0.9rem;
+    color: var(--marrom);
+}
+
+.animal-modal .animal-contato {
+    margin: 6px 0 0;
+    color: #4b5563;
+}
+
+.animal-modal .animal-contato a {
+    color: var(--laranja);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.animal-modal .animal-contato a:hover { text-decoration: underline; }

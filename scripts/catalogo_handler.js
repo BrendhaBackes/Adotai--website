@@ -81,6 +81,33 @@
     const tipoDoAnimal  = a => [a.especie, a.raca].filter(Boolean).join(' • ');           // "Cachorro • Pug"
     const localDoAnimal = a => [a.cidade, a.uf].filter(Boolean).join(' - ') || 'Local não informado';
 
+    // 41990000001 -> (41) 99000-0001  (se não tiver 10 ou 11 dígitos, devolve como está)
+    function formatarTelefone(valor) {
+        const d = String(valor || '').replace(/\D/g, '');
+        if (d.length === 11) return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+        if (d.length === 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+        return String(valor || '');
+    }
+
+    // Linha de contato do protetor. No card da lista é só texto (o card inteiro já é clicável);
+    // no card em destaque (comoLink = true) vira um link "tel:" para ligar direto.
+    function criarContato(a, comoLink) {
+        if (!a.telefone_protetor) return null;
+
+        const p = criar('p', 'animal-contato');
+        p.append('Contato do protetor: ');
+
+        const texto = formatarTelefone(a.telefone_protetor);
+        if (comoLink) {
+            const link = criar('a', '', texto);
+            link.href = 'tel:+55' + String(a.telefone_protetor).replace(/\D/g, '');
+            p.append(link);
+        } else {
+            p.append(criar('strong', '', texto));
+        }
+        return p;
+    }
+
     function criarEtiquetaStatus(a) {
         return criar('span', 'animal-status ' + paraClasse(a.status_adocao), a.status_adocao);
     }
@@ -99,12 +126,13 @@
         status.appendChild(criarEtiquetaStatus(a));
 
         card.append(
-            criarFoto(a),
-            criarTitulo(a),
-            criar('p', '', tipoDoAnimal(a)),
-            criar('p', '', localDoAnimal(a)),
-            descricao,
-            status
+        criarFoto(a),
+        criarTitulo(a),
+        criar('p', '', tipoDoAnimal(a)),
+        criar('p', '', localDoAnimal(a)),
+        ...[criarContato(a, false)].filter(Boolean),
+        descricao,
+        status
         );
 
         card.addEventListener('click', () => abrirDestaque(a, card));
@@ -178,13 +206,14 @@
         botao.addEventListener('click', () => queroAdotar(a, botao, mensagem));
 
         corpo.append(
-            criarTitulo(a, 'animal-modal-titulo'),
-            criar('p', 'animal-modal-info', tipoDoAnimal(a)),
-            criar('p', 'animal-modal-info', localDoAnimal(a)),
-            status,
-            descricao,
-            botao,
-            mensagem
+        criarTitulo(a, 'animal-modal-titulo'),
+        criar('p', 'animal-modal-info', tipoDoAnimal(a)),
+        criar('p', 'animal-modal-info', localDoAnimal(a)),
+        ...[criarContato(a, true)].filter(Boolean),
+        status,
+        descricao,
+        botao,
+        mensagem
         );
 
         destaque.replaceChildren(fechar, criarFoto(a, 'animal-modal-foto'), corpo);
