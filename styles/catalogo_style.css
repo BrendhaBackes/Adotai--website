@@ -217,3 +217,105 @@ body.modal-aberto { overflow: hidden; }
 }
 
 .animal-modal .animal-contato a:hover { text-decoration: underline; }
+
+/* =====================================================
+   Textos longos sem quebrar o layout
+   Limites do formulário de cadastro: nome 50, espécie 30, raça 80,
+   descrição 1000 caracteres (e cidade até 80).
+   Palavras compridas e sem espaço quebram em qualquer ponto
+   em vez de empurrar o card para fora da grade.
+   ===================================================== */
+
+/* Itens de grid/flex podem encolher abaixo do tamanho do conteúdo */
+.animal-card,
+.animal-modal,
+.animal-modal-corpo { min-width: 0; }
+
+/* Card da lista */
+.animal-card .animal-title { min-width: 0; align-items: flex-start; }
+
+.animal-card .animal-title h2,
+.animal-modal .animal-title h2 {
+    min-width: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.animal-card .animal-title h2 {
+    /* nome muito longo ocupa no máximo 2 linhas no card (o nome completo aparece no card em destaque) */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.animal-sex {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.animal-card p { overflow-wrap: anywhere; }
+
+/* Espécie • raça (até 30 + 80 caracteres): no máximo 2 linhas no card */
+.animal-card > p:not(.animal-desc):not(.animal-contato):not(.animal-status-linha) {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.animal-card .animal-desc,
+.animal-card .animal-contato { overflow-wrap: anywhere; }
+
+/* Card em destaque: tudo aparece completo e a janela rola se for preciso */
+.animal-modal-info,
+.animal-modal-msg,
+.animal-modal .animal-contato { overflow-wrap: anywhere; }
+
+.animal-modal-desc {
+    overflow-wrap: anywhere;    /* até 1000 caracteres, com as quebras de linha digitadas (pre-line acima) */
+}
+
+
+/* =====================================================
+   Card em destaque: rola normalmente (roda do mouse, toque, setas),
+   mas sem mostrar a barra de rolagem, para as bordas arredondadas
+   ficarem limpas.
+   ===================================================== */
+.animal-modal,
+.animal-overlay {
+    scrollbar-width: none;          /* Firefox */
+    -ms-overflow-style: none;       /* Edge/IE antigos */
+}
+
+.animal-modal::-webkit-scrollbar,
+.animal-overlay::-webkit-scrollbar {
+    display: none;                  /* Chrome, Safari, Edge */
+}
+
+
+/* =====================================================
+   Degradê no rodapé do card em destaque
+   Aparece só enquanto há mais conteúdo para rolar (a classe
+   "tem-mais" é ligada e desligada pelo catalogo_handler.js).
+   ===================================================== */
+.animal-modal::after {
+    content: "";
+    position: sticky;
+    bottom: 0;
+    display: block;
+    height: 56px;
+    margin-top: -56px;              /* sobrepõe o fim do conteúdo, sem aumentar a altura do card */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 85%);
+    pointer-events: none;           /* não atrapalha cliques nem toques no que está por baixo */
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.animal-modal.tem-mais::after { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+    .animal-modal::after { transition: none; }
+}

@@ -100,8 +100,7 @@
         const texto = formatarTelefone(a.telefone_protetor);
         if (comoLink) {
             const link = criar('a', '', texto);
-            link.href = 'https://wa.me/55' + String(a.telefone_protetor).replace(/\D/g, '');
-            link.target = '_blank';
+            link.href = 'tel:+55' + String(a.telefone_protetor).replace(/\D/g, '');
             p.append(link);
         } else {
             p.append(criar('strong', '', texto));
@@ -161,6 +160,16 @@
 
     let cardOrigem = null;
     let fechando = false;
+
+    // Degradê no rodapé do card em destaque: aparece só enquanto ainda há conteúdo para rolar
+    // (a barra de rolagem é escondida no CSS, então este é o aviso visual).
+    function atualizarDegrade() {
+        const resta = destaque.scrollHeight - destaque.scrollTop - destaque.clientHeight;
+        destaque.classList.toggle('tem-mais', resta > 4);
+    }
+
+    destaque.addEventListener('scroll', atualizarDegrade, { passive: true });
+    window.addEventListener('resize', () => { if (!overlay.hidden) atualizarDegrade(); });
 
     const semAnimacao = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -229,6 +238,7 @@
 
         overlay.hidden = false;
         document.body.classList.add('modal-aberto');
+        atualizarDegrade();
 
         if (!semAnimacao()) {
             destaque.animate(
@@ -250,6 +260,7 @@
             cancelarAnimacoes();
             overlay.hidden = true;
             destaque.replaceChildren();
+            destaque.classList.remove('tem-mais');
             document.body.classList.remove('modal-aberto');
             fechando = false;
             if (cardOrigem && cardOrigem.isConnected) cardOrigem.focus({ preventScroll: true });
