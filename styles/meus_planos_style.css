@@ -1,0 +1,52 @@
+/* =========================================
+   MEUS PLANOS (área do adotante)
+   Complementa protetor_painel_style.css, que já traz o layout do painel,
+   o card .animal-item, os selos, as chips e a área .animal-gerenciar.
+   Carregue DEPOIS do protetor_painel_style.css.
+   ========================================= */
+
+/* Botão com cara de .btn-salvar, mas que é um link */
+.btn-link {
+    display: inline-block;
+    text-decoration: none;
+}
+
+/* No lugar da foto do animal: um quadrado laranja com ícone */
+.plano-icone {
+    display: grid;
+    place-items: center;
+    width: 96px;
+    height: 96px;
+    border-radius: 14px;
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+.plano-icone svg { width: 44px; height: 44px; }
+
+/* Selos próprios dos planos */
+.selo-ativo   { background-color: #e9f6ec; color: #1e5b2e; }
+.selo-publico { background-color: var(--creme); color: var(--marrom); }
+
+/* "R$ 49,90 / mês" */
+.plano-preco-linha {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--laranja);
+}
+
+.plano-preco-linha small {
+    margin-left: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+@media (max-width: 560px) {
+    .plano-icone { width: 72px; height: 72px; }
+    .plano-icone svg { width: 32px; height: 32px; }
+}

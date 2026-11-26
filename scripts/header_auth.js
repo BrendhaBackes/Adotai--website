@@ -29,13 +29,13 @@
             { texto: 'Painel',            caminho: 'pages/admin_painel.html' },
         ],
         protetor: [
-            { texto: 'Cadastrar Animais', caminho: 'pages/protetor_painel.html' },
+            { texto: 'Painel Protetor', caminho: 'pages/protetor_painel.html' },
         ],
         veterinario: [
-            { texto: 'Cadastrar Planos',  caminho: 'pages/cadastrar_plano.html' },
+            { texto: 'Painel Veterinário',  caminho: 'pages/cadastrar_plano.html' },
         ],
         adotante: [
-            // por enquanto só o "Sair"
+            { texto: 'Meus Planos',  caminho: 'pages/meus_planos.html' },
         ],
     };
 

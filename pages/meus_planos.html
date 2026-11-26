@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus planos | Adotaí</title>
+    <link rel="stylesheet" href="../styles/index_style.css">
+    <link rel="stylesheet" href="../styles/protetor_painel_style.css">
+    <link rel="stylesheet" href="../styles/meus_planos_style.css">
+    <script src="../scripts/layout.js" defer></script>
+    <script src="../scripts/header_auth.js" defer></script>
+    <script src="../scripts/meus_planos_handler.js" defer></script>
+</head>
+<body>
+    <header id="site-header"></header>
+
+    <!-- O id "protetor-painel" é mantido de propósito: é ele que dá o layout (menu lateral + conteúdo)
+         no protetor_painel_style.css, reaproveitado aqui para as telas ficarem idênticas. -->
+    <main id="protetor-painel">
+
+        <!-- ===== Menu lateral ===== -->
+        <aside class="painel-lateral">
+            <div class="painel-perfil">
+                <span class="painel-avatar" aria-hidden="true">
+                    <img src="../images/user_icon.png" alt="">
+                </span>
+                <div>
+                    <p class="painel-perfil-rotulo">Área do adotante</p>
+                    <p class="painel-perfil-nome" id="painel-nome">Bem-vindo(a)!</p>
+                </div>
+            </div>
+
+            <div class="painel-abas" role="tablist" aria-label="Seções" aria-orientation="vertical">
+                <button type="button" role="tab" class="painel-aba" id="aba-planos"
+                        aria-controls="painel-planos" aria-selected="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>
+                    </svg>
+                    <span>Meus planos</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="painel-conteudo">
+
+            <!-- O JS preenche a lista com os dados de api/assinatura_listar.php:
+                 só as assinaturas do adotante logado. -->
+            <section class="painel-card" id="painel-planos" role="tabpanel" aria-labelledby="aba-planos">
+
+                <div class="painel-titulo">
+                    <h1>Meus planos</h1>
+                    <p>Acompanhe os planos que você assinou e cancele quando quiser.</p>
+                </div>
+
+                <p class="aviso aviso-sucesso" id="planos-sucesso" role="status" hidden></p>
+
+                <p class="meus-animais-resumo" id="planos-resumo" hidden></p>
+
+                <div class="aviso aviso-erro aviso-acao" id="planos-erro" role="alert" hidden>
+                    <span id="planos-erro-texto"></span>
+                    <button type="button" class="btn-mini" id="planos-tentar">Tentar de novo</button>
+                </div>
+
+                <p class="meus-animais-carregando" id="planos-carregando" role="status" hidden>Carregando seus planos...</p>
+
+                <div class="animal-lista" id="planos-lista"></div>
+
+                <div class="vazio" id="planos-vazio" hidden>
+                    <img src="../images/pata_login.png" alt="">
+                    <h2>Nenhum plano assinado</h2>
+                    <p>Quando você assinar um plano, ele aparecerá aqui.</p>
+                    <a class="btn-salvar btn-link" href="./catalogo_planos.html">Ver planos disponíveis</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer id="site-footer"></footer>
+</body>
+</html>
