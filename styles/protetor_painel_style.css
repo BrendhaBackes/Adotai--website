@@ -787,3 +787,104 @@
     .btn-salvar,
     .btn-secundario { width: 100%; }
 }
+
+/* ---------- Aba "Meus animais": status da adoção e remoção ---------- */
+.animal-gerenciar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+    padding-top: 12px;
+    border-top: 2px solid var(--pessego);
+}
+
+.animal-gerenciar-linha {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+}
+
+.animal-gerenciar-rotulo {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.animal-gerenciar-select {
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 0.88rem;
+    color: var(--texto);
+    background-color: var(--creme);
+    border: 2px solid var(--pessego);
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.animal-gerenciar-select:focus {
+    outline: none;
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 4px rgba(232, 138, 32, 0.22);
+}
+
+.animal-gerenciar-select:disabled { opacity: 0.6; cursor: wait; }
+
+.animal-gerenciar-acoes { display: flex; }
+
+.animal-gerenciar-confirma {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #8a1f1f;
+}
+
+.btn-mini-perigo { border-color: #c0504d; color: #8a1f1f; }
+.btn-mini-perigo:hover { background-color: #fdecec; }
+
+.btn-mini-perigo-cheio { border-color: #c0504d; background-color: #c0504d; color: #fff; }
+.btn-mini-perigo-cheio:hover { background-color: #a8403d; }
+
+.btn-mini:disabled { opacity: 0.6; cursor: wait; }
+
+.animal-gerenciar-erro {
+    margin: 0;
+    color: #8a1f1f;
+    font-size: 0.82rem;
+}
+
+/* ---------- Aba "Meus animais": textos longos sem quebrar o card ----------
+   Limites do formulário: nome 50, raça/cor 80, condição de saúde 500, descrição 1000 caracteres
+   (e observação do administrador, até 1000). Palavras compridas quebram em qualquer ponto. */
+.animal-item { align-items: start; }
+
+.animal-detalhes {
+    overflow-wrap: anywhere;
+}
+
+.animal-bloco {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.animal-bloco-rotulo {
+    font-size: 0.78rem;
+    color: var(--marrom);
+}
+
+.animal-texto {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--texto);
+    white-space: pre-line;      /* respeita as quebras de linha digitadas */
+    overflow-wrap: anywhere;    /* nada de palavra comprida estourando o card */
+}
+
+.animal-nota { white-space: pre-line; }
+
+.animal-gerenciar-confirma span { overflow-wrap: anywhere; min-width: 0; }

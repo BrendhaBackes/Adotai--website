@@ -14,6 +14,7 @@
     const URL_SESSAO   = new URL('api/sessao.php', base).href;
     const URL_CADASTRO = new URL('api/animal_cadastrar.php', base).href;
     const URL_LISTA    = new URL('api/meus_animais.php', base).href;
+    const URL_GERENCIAR = new URL('api/animal_gerenciar.php', base).href;
     const FOTO_PADRAO  = new URL('images/franky.jpeg', base).href;   // usada se o animal não tiver foto
     const URL_LOGIN    = new URL('pages/login.html', base).href;
     const URL_INICIO   = new URL('index.html', base).href;
@@ -178,6 +179,14 @@
             .filter(Boolean).join(' · ');
         if (local) info.appendChild(criar('p', 'animal-detalhes', local));
 
+        // Cor e convivência (só aparecem se informados)
+        const extras = [
+            a.cor ? `Cor: ${a.cor}` : null,
+            ['Sim', 'Não'].includes(a.compatibilidade_criancas) ? `Crianças: ${a.compatibilidade_criancas}` : null,
+            ['Sim', 'Não'].includes(a.compatibilidade_animais) ? `Outros animais: ${a.compatibilidade_animais}` : null,
+        ].filter(Boolean).join(' · ');
+        if (extras) info.appendChild(criar('p', 'animal-detalhes', extras));
+
         // Cuidados de saúde já feitos
         const cuidados = [['castrado', 'Castrado'], ['vacinado', 'Vacinado'], ['vermifugado', 'Vermifugado']]
             .filter(([campo]) => Number(a[campo]) === 1);
@@ -185,6 +194,19 @@
             const chips = criar('ul', 'animal-chips');
             cuidados.forEach(([, rotulo]) => chips.appendChild(criar('li', 'animal-chip', rotulo)));
             info.appendChild(chips);
+        }
+
+        // Textos longos do formulário (descrição até 1000 e condição de saúde até 500 caracteres):
+        // aparecem completos, com as quebras de linha digitadas e sem estourar o card
+        if (a.descricao) {
+            const bloco = criar('div', 'animal-bloco');
+            bloco.append(criar('strong', 'animal-bloco-rotulo', 'Descrição'), criar('p', 'animal-texto', a.descricao));
+            info.appendChild(bloco);
+        }
+        if (a.condicao_saude) {
+            const bloco = criar('div', 'animal-bloco');
+            bloco.append(criar('strong', 'animal-bloco-rotulo', 'Condição de saúde'), criar('p', 'animal-texto', a.condicao_saude));
+            info.appendChild(bloco);
         }
 
         // Recados do administrador
@@ -203,9 +225,119 @@
             info.appendChild(nota);
         }
 
+        info.appendChild(criarGerenciar(a));
+
         const card = criar('article', 'animal-item');
         card.append(criarFotoAnimal(a), info);
         return card;
+    }
+
+    // ---------- Gerenciar o animal: status da adoção e remoção ----------
+    const STATUS_ADOCAO = ['Disponível', 'Em processo', 'Adotado'];
+
+    // Envia uma ação para api/animal_gerenciar.php. Devolve o JSON ou lança Error com a mensagem para a tela.
+    async function enviarAcao(acao, dados) {
+        let resposta, corpo;
+        try {
+            resposta = await fetch(`${URL_GERENCIAR}?acao=${acao}`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'X-Requested-With': 'fetch' },   // o PHP exige este cabeçalho
+                body: new URLSearchParams(dados),
+            });
+            corpo = await resposta.json();
+        } catch (e) {
+            throw new Error('Não foi possível se conectar ao servidor. Tente novamente.');
+        }
+
+        if (resposta.status === 401) { location.replace(URL_LOGIN); throw new Error('Sessão expirada.'); }
+        if (!resposta.ok || !corpo.ok) throw new Error(corpo.mensagem || 'Não foi possível concluir a ação.');
+        return corpo;
+    }
+
+    function criarGerenciar(a) {
+        const area = criar('div', 'animal-gerenciar');
+        const msg = criar('p', 'animal-gerenciar-erro');
+        msg.setAttribute('role', 'alert');
+        msg.hidden = true;
+
+        const erro = (texto) => { msg.textContent = texto; msg.hidden = !texto; };
+
+        // ----- Status da adoção (só para animais já aprovados) -----
+        if (a.status_aprovacao === 'Aprovado') {
+            const rotulo = criar('label', 'animal-gerenciar-rotulo', 'Status da adoção');
+            const select = criar('select', 'animal-gerenciar-select');
+            select.id = `status-adocao-${a.id_animal}`;
+            rotulo.htmlFor = select.id;
+            STATUS_ADOCAO.forEach(st => {
+                const op = criar('option', '', st);
+                op.value = st;
+                op.selected = st === a.status_adocao;
+                select.appendChild(op);
+            });
+
+            select.addEventListener('change', async () => {
+                const anterior = a.status_adocao;
+                erro('');
+                select.disabled = true;
+                try {
+                    await enviarAcao('status', { id_animal: a.id_animal, status_adocao: select.value });
+                    a.status_adocao = select.value;
+                    carregarMeusAnimais();   // redesenha com o selo atualizado
+                } catch (e) {
+                    select.value = anterior;
+                    erro(e.message);
+                } finally {
+                    select.disabled = false;
+                }
+            });
+
+            const linha = criar('div', 'animal-gerenciar-linha');
+            linha.append(rotulo, select);
+            area.appendChild(linha);
+        }
+
+        // ----- Remover (pede confirmação no próprio card) -----
+        const acoes = criar('div', 'animal-gerenciar-acoes');
+        const btnRemover = criar('button', 'btn-mini btn-mini-perigo', 'Remover animal');
+        btnRemover.type = 'button';
+
+        const confirmacao = criar('div', 'animal-gerenciar-confirma');
+        confirmacao.hidden = true;
+        const pergunta = criar('span', '', `Remover ${a.nome_animal} definitivamente?`);
+        const btnSim = criar('button', 'btn-mini btn-mini-perigo-cheio', 'Sim, remover');
+        btnSim.type = 'button';
+        const btnNao = criar('button', 'btn-mini', 'Cancelar');
+        btnNao.type = 'button';
+        confirmacao.append(pergunta, btnSim, btnNao);
+
+        btnRemover.addEventListener('click', () => {
+            erro('');
+            btnRemover.hidden = true;
+            confirmacao.hidden = false;
+            btnNao.focus();
+        });
+        btnNao.addEventListener('click', () => {
+            confirmacao.hidden = true;
+            btnRemover.hidden = false;
+            btnRemover.focus();
+        });
+        btnSim.addEventListener('click', async () => {
+            btnSim.disabled = btnNao.disabled = true;
+            btnSim.textContent = 'Removendo...';
+            try {
+                await enviarAcao('remover', { id_animal: a.id_animal });
+                carregarMeusAnimais();   // o animal some da lista
+            } catch (e) {
+                erro(e.message);
+                btnSim.disabled = btnNao.disabled = false;
+                btnSim.textContent = 'Sim, remover';
+            }
+        });
+
+        acoes.append(btnRemover, confirmacao);
+        area.append(acoes, msg);
+        return area;
     }
 
     // "3 animais cadastrados · 1 aguardando aprovação · 1 recusado"

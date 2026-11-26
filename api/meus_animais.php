@@ -12,7 +12,8 @@
 //
 // Resposta:
 //   { ok: true, animais: [ { id_animal, nome_animal, descricao, especie, raca, idade_meses,
-//       sexo, porte, cor, castrado, vacinado, vermifugado, cidade, uf, status_adocao,
+//       sexo, porte, cor, castrado, vacinado, vermifugado, condicao_saude, compatibilidade_criancas,
+//       compatibilidade_animais, cidade, uf, status_adocao,
 //       data_cadastro, foto_url, status_aprovacao, observacao_admin } ] }
 //   { ok: false, erro: "codigo", mensagem: "texto para a tela" }
 //
@@ -86,7 +87,8 @@ try {
     // Só os animais ligados a este protetor, do mais novo para o mais antigo
     $stmt = $conn->prepare(
         'SELECT id_animal, nome_animal, descricao, especie, raca, idade_meses, sexo, porte, cor,
-                castrado, vacinado, vermifugado, cidade, uf, status_adocao, data_cadastro,
+                castrado, vacinado, vermifugado, condicao_saude,
+                compatibilidade_criancas, compatibilidade_animais, cidade, uf, status_adocao, data_cadastro,
                 foto_url, status_aprovacao, observacao_admin
            FROM animal
           WHERE id_protetor = ?
