@@ -32,10 +32,10 @@ INSERT INTO usuario (id, nome, status_conta, telefone, email, senha, data_criaca
 
 -- veterinario
 INSERT INTO veterinario (id_veterinario, nome, cnpj, crmv, especialidade, email, telefone, cidade, uf, status, data_cadastro, id_usuario, descricao, endereco, servicos, planos, valor_consulta, foto_url) VALUES
-(1, 'Ana Martins', NULL, 'CRMV-PR-1001', NULL, NULL, NULL, NULL, NULL, 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 'Carlos Oliveira', NULL, 'CRMV-PR-1002', NULL, NULL, NULL, NULL, NULL, 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 'Fernanda Souza', NULL, 'CRMV-PR-1003', NULL, NULL, NULL, NULL, NULL, 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 'Roberto Lima', NULL, 'CRMV-PR-1004', NULL, NULL, NULL, NULL, NULL, 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(1, 'Ana Martins', NULL, 'CRMV-PR-1001', NULL, 'ana.martins@adotai.com', '41990000001', 'São Paulo', 'SP', 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'Carlos Oliveira', NULL, 'CRMV-PR-1002', NULL, 'carlos.oliveira@adotai.com', '41990000002', 'Chapecó', 'SC', 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 'Fernanda Souza', NULL, 'CRMV-PR-1003', NULL, 'fernanda.souza@adotai.com', '41990000003', 'São Paulo', 'SP', 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, 'Roberto Lima', NULL, 'CRMV-PR-1004', NULL, 'roberto.lima@adotai.com', '41990000004', 'São José dos Pinhais', 'PR', 'Ativo', '2026-11-01 22:13:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (5, 'Veterinário Demo', NULL, 'CRMV-PR-1005', NULL, 'veterinario.demo@adotai.com', '41990000011', 'Curitiba', 'PR', 'Ativo', '2026-11-12 00:00:00', 11, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
