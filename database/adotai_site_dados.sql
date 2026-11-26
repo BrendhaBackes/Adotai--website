@@ -154,7 +154,7 @@ INSERT INTO plano (id_plano, nome, descricao, publico_alvo, beneficios, valor, p
 
 
 -- plano_de_assinatura
-INSERT INTO plano_de_assinatura (id_plano, usuario_id, vencimento, nome, valor, id_veterinario, id_usuario, tipo_registro, descricao, periodicidade, beneficios, destaque, status, ordem) VALUES
-(1, NULL, NULL, 'Adotante', 0.00, NULL, NULL, 'plano', 'Plano gratuito para pessoas que desejam encontrar um animal para adoção.', 'Gratuito', 'Visualizar animais disponíveis\nAdicionar animais aos favoritos\nDemonstrar interesse em adoções', 0, 'Ativo', 1),
-(2, NULL, NULL, 'Protetor Independente', 0.00, NULL, NULL, 'plano', 'Plano gratuito para protetores que desejam divulgar animais para adoção.', 'Gratuito', 'Cadastrar animais para adoção\nGerenciar anúncios\nReceber interessados na adoção', 0, 'Ativo', 2),
-(3, NULL, NULL, 'ONG / Instituição', 0.00, NULL, NULL, 'plano', 'Plano gratuito para instituições de proteção animal.', 'Gratuito', 'Divulgar animais disponíveis\nGerenciar animais cadastrados\nAmpliar o alcance das adoções', 1, 'Ativo', 3);
+INSERT INTO plano_de_assinatura (id_plano, usuario_id, vencimento, nome, valor, id_veterinario, id_usuario, tipo_registro, descricao, periodicidade, beneficios, destaque, status, ordem, publico_alvo) VALUES
+(1, NULL, NULL, 'Adotante', 0.00, NULL, NULL, 'plano', 'Plano gratuito para pessoas que desejam encontrar um animal para adoção.', 'Gratuito', 'Visualizar animais disponíveis\nAdicionar animais aos favoritos\nDemonstrar interesse em adoções', 0, 'Ativo', 1, 'adotante'),
+(2, NULL, NULL, 'Protetor Independente', 0.00, NULL, NULL, 'plano', 'Plano gratuito para protetores que desejam divulgar animais para adoção.', 'Gratuito', 'Cadastrar animais para adoção\nGerenciar anúncios\nReceber interessados na adoção', 0, 'Ativo', 2, 'protetor'),
+(3, NULL, NULL, 'ONG / Instituição', 0.00, NULL, NULL, 'plano', 'Plano gratuito para instituições de proteção animal.', 'Gratuito', 'Divulgar animais disponíveis\nGerenciar animais cadastrados\nAmpliar o alcance das adoções', 1, 'Ativo', 3, 'protetor');
