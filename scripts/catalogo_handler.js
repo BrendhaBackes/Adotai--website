@@ -100,7 +100,8 @@
         const texto = formatarTelefone(a.telefone_protetor);
         if (comoLink) {
             const link = criar('a', '', texto);
-            link.href = 'tel:+55' + String(a.telefone_protetor).replace(/\D/g, '');
+            link.href = 'https://wa.me/55' + String(a.telefone_protetor).replace(/\D/g, '');
+            link.target = '_blank';
             p.append(link);
         } else {
             p.append(criar('strong', '', texto));
