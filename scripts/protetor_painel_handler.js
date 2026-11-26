@@ -1,7 +1,9 @@
 // =====================================================
 // Painel do protetor:
 //  - confere se quem está logado é protetor;
-//  - troca entre as abas (Cadastrar animal / Meus animais);
+//  - troca entre as abas (Cadastrar animal / Meus animais) e abre a aba
+//    indicada no endereço (ex.: protetor_painel.html#animais);
+//  - aba "Meus animais": lista os animais do protetor logado (api/meus_animais.php);
 //  - formulário de cadastro de animal: contadores de caracteres,
 //    idade em anos + meses -> idade_meses, validação e envio.
 // (As validações aqui são só conveniência: o PHP precisa validar de novo.)
@@ -10,7 +12,9 @@
     const base = new URL('../', document.currentScript.src);   // raiz do site (pasta adotai/)
 
     const URL_SESSAO   = new URL('api/sessao.php', base).href;
-    const URL_CADASTRO = new URL('api/animal_cadastrar.php', base).href;   // ainda a criar (back-end)
+    const URL_CADASTRO = new URL('api/animal_cadastrar.php', base).href;
+    const URL_LISTA    = new URL('api/meus_animais.php', base).href;
+    const FOTO_PADRAO  = new URL('images/franky.jpeg', base).href;   // usada se o animal não tiver foto
     const URL_LOGIN    = new URL('pages/login.html', base).href;
     const URL_INICIO   = new URL('index.html', base).href;
 
@@ -66,6 +70,8 @@
 
         if (focar) ABAS[nome].aba.focus();
         history.replaceState(null, '', '#' + nome);
+
+        if (nome === 'animais') carregarMeusAnimais();   // sempre mostra a lista atualizada
     }
 
     ORDEM_ABAS.forEach((chave, i) => {
@@ -89,10 +95,181 @@
         btn.addEventListener('click', () => selecionarAba(btn.dataset.irAba, true));
     });
 
-    selecionarAba(location.hash.replace('#', ''));
+    // ==================================================
+    // 3. ABA "MEUS ANIMAIS"
+    // Busca em api/meus_animais.php os animais ligados ao protetor logado
+    // (o servidor descobre o protetor pela sessão: nenhum id é enviado daqui)
+    // e desenha um card para cada um.
+    // ==================================================
+    const listaAnimais   = $('meus-animais-lista');
+    const vazioAnimais   = $('meus-animais-vazio');
+    const resumoAnimais  = $('meus-animais-resumo');
+    const carregandoAnim = $('meus-animais-carregando');
+    const erroAnimais    = $('meus-animais-erro');
+    const erroAnimaisTxt = $('meus-animais-erro-texto');
+
+    let pedidoAtual = 0;   // só a resposta do pedido mais recente é desenhada
+
+    // Texto sem acento, minúsculo e com hífens: "Em processo" -> "em-processo" (sufixo das classes .selo-*)
+    function paraClasse(texto) {
+        return String(texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    }
+
+    // 18 -> "1 ano e 6 meses" | 8 -> "8 meses" | 24 -> "2 anos"
+    function formatarIdade(meses) {
+        if (meses === null || meses === undefined) return 'Idade não informada';
+        const anos = Math.floor(meses / 12);
+        const resto = meses % 12;
+        const partes = [];
+        if (anos > 0)  partes.push(anos === 1 ? '1 ano' : `${anos} anos`);
+        if (resto > 0 || anos === 0) partes.push(resto === 1 ? '1 mês' : `${resto} meses`);
+        return partes.join(' e ');
+    }
+
+    // "2026-11-10" -> "10/11/2026" (sem passar por Date: evita erro de fuso horário)
+    function formatarData(iso) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
+        return m ? `${m[3]}/${m[2]}/${m[1]}` : null;
+    }
+
+    function selo(texto, status) {
+        return criar('span', `selo selo-${paraClasse(status)}`, texto);
+    }
+
+    function criarFotoAnimal(a) {
+        const img = criar('img', 'animal-foto');
+        img.loading = 'lazy';
+        img.alt = `Foto de ${a.nome_animal}`;
+        img.src = a.foto_url ? new URL(a.foto_url, base).href : FOTO_PADRAO;
+        img.addEventListener('error', () => {
+            if (img.src !== FOTO_PADRAO) img.src = FOTO_PADRAO;   // foto não encontrada
+        }, { once: true });
+        return img;
+    }
+
+    function criarCardAnimal(a) {
+        const info = criar('div', 'animal-info');
+
+        // Nome + selos: aprovação do admin e, se já está no catálogo, o andamento da adoção
+        const topo = criar('div', 'animal-topo');
+        topo.appendChild(criar('h3', 'animal-nome', a.nome_animal));
+
+        if (a.status_aprovacao === 'Aprovado') {
+            topo.appendChild(selo('Publicado no catálogo', 'aprovado'));
+            if (a.status_adocao) topo.appendChild(selo(a.status_adocao, a.status_adocao));
+        } else if (a.status_aprovacao === 'Pendente') {
+            topo.appendChild(selo('Aguardando aprovação', 'pendente'));
+        } else if (a.status_aprovacao === 'Recusado') {
+            topo.appendChild(selo('Recusado', 'recusado'));
+        } else {
+            topo.appendChild(selo(a.status_aprovacao || 'Sem status', 'pendente'));
+        }
+        info.appendChild(topo);
+
+        // Espécie · raça · sexo · porte · idade
+        const detalhes = [a.especie, a.raca, a.sexo !== 'Não informado' ? a.sexo : null, a.porte, formatarIdade(a.idade_meses)]
+            .filter(Boolean).join(' · ');
+        info.appendChild(criar('p', 'animal-detalhes', detalhes));
+
+        // Local · data do cadastro
+        const local = [a.cidade ? (a.uf ? `${a.cidade} - ${a.uf}` : a.cidade) : null,
+                       formatarData(a.data_cadastro) ? `Cadastrado em ${formatarData(a.data_cadastro)}` : null]
+            .filter(Boolean).join(' · ');
+        if (local) info.appendChild(criar('p', 'animal-detalhes', local));
+
+        // Cuidados de saúde já feitos
+        const cuidados = [['castrado', 'Castrado'], ['vacinado', 'Vacinado'], ['vermifugado', 'Vermifugado']]
+            .filter(([campo]) => Number(a[campo]) === 1);
+        if (cuidados.length) {
+            const chips = criar('ul', 'animal-chips');
+            cuidados.forEach(([, rotulo]) => chips.appendChild(criar('li', 'animal-chip', rotulo)));
+            info.appendChild(chips);
+        }
+
+        // Recados do administrador
+        if (a.status_aprovacao === 'Pendente') {
+            info.appendChild(criar('p', 'animal-nota animal-nota-pendente',
+                'O administrador ainda vai analisar este cadastro. Enquanto isso, ele não aparece no catálogo.'));
+        } else if (a.status_aprovacao === 'Recusado') {
+            const nota = criar('p', 'animal-nota animal-nota-recusado');
+            nota.appendChild(criar('strong', null, 'Motivo da recusa: '));
+            nota.appendChild(document.createTextNode(a.observacao_admin || 'não informado pelo administrador.'));
+            info.appendChild(nota);
+        } else if (a.observacao_admin) {
+            const nota = criar('p', 'animal-nota animal-nota-pendente');
+            nota.appendChild(criar('strong', null, 'Observação do administrador: '));
+            nota.appendChild(document.createTextNode(a.observacao_admin));
+            info.appendChild(nota);
+        }
+
+        const card = criar('article', 'animal-item');
+        card.append(criarFotoAnimal(a), info);
+        return card;
+    }
+
+    // "3 animais cadastrados · 1 aguardando aprovação · 1 recusado"
+    function textoResumo(animais) {
+        const conta = (status) => animais.filter(a => a.status_aprovacao === status).length;
+        const pendentes = conta('Pendente');
+        const recusados = conta('Recusado');
+        const partes = [animais.length === 1 ? '1 animal cadastrado' : `${animais.length} animais cadastrados`];
+        if (pendentes) partes.push(pendentes === 1 ? '1 aguardando aprovação' : `${pendentes} aguardando aprovação`);
+        if (recusados) partes.push(recusados === 1 ? '1 recusado' : `${recusados} recusados`);
+        return partes.join(' · ');
+    }
+
+    function mostrarMeusAnimais(animais) {
+        listaAnimais.replaceChildren(...animais.map(criarCardAnimal));
+        vazioAnimais.hidden = animais.length > 0;
+        resumoAnimais.hidden = animais.length === 0;
+        resumoAnimais.textContent = animais.length ? textoResumo(animais) : '';
+    }
+
+    function mostrarErroAnimais(texto) {
+        erroAnimaisTxt.textContent = texto;
+        erroAnimais.hidden = false;
+    }
+
+    async function carregarMeusAnimais() {
+        const meuPedido = ++pedidoAtual;
+
+        erroAnimais.hidden = true;
+        if (!listaAnimais.hasChildNodes()) {   // 1ª vez: avisa que está carregando
+            vazioAnimais.hidden = true;
+            carregandoAnim.hidden = false;
+        }
+
+        try {
+            const resposta = await fetch(URL_LISTA, { credentials: 'same-origin', cache: 'no-store' });
+            const corpo = await resposta.json().catch(() => null);
+
+            if (meuPedido !== pedidoAtual) return;   // chegou um pedido mais novo: ignora este
+
+            if (EXIGIR_PROTETOR && resposta.status === 401) { location.replace(URL_LOGIN);  return; }
+            if (EXIGIR_PROTETOR && resposta.status === 403 && corpo && corpo.erro === 'tipo_nao_permitido') {
+                location.replace(URL_INICIO);
+                return;
+            }
+
+            if (!resposta.ok || !corpo || !corpo.ok || !Array.isArray(corpo.animais)) {
+                mostrarErroAnimais((corpo && corpo.mensagem) || 'Não foi possível carregar os seus animais agora.');
+                return;
+            }
+
+            mostrarMeusAnimais(corpo.animais);
+        } catch (erro) {
+            if (meuPedido !== pedidoAtual) return;
+            mostrarErroAnimais('Não foi possível se conectar ao servidor. Verifique sua conexão e tente de novo.');
+        } finally {
+            if (meuPedido === pedidoAtual) carregandoAnim.hidden = true;
+        }
+    }
+
+    $('meus-animais-tentar').addEventListener('click', carregarMeusAnimais);
 
     // ==================================================
-    // 3. FORMULÁRIO DE CADASTRO DE ANIMAL
+    // 4. FORMULÁRIO DE CADASTRO DE ANIMAL
     // ==================================================
     const form      = $('animal-form');
     const btnSalvar = $('btn-salvar');
@@ -377,4 +554,14 @@
             btnSalvar.textContent = 'Cadastrar animal';
         }
     });
+
+    // ==================================================
+    // 5. ABA INICIAL
+    // Fica por último de propósito: abrir o endereço com "#animais" já dispara o
+    // carregamento da lista, que usa elementos e constantes definidos acima.
+    // ==================================================
+    selecionarAba(location.hash.replace('#', ''));
+
+    // Mudou só o "#..." do endereço (link para #animais, botão voltar): troca a aba
+    window.addEventListener('hashchange', () => selecionarAba(location.hash.replace('#', '')));
 })();

@@ -1,0 +1,16 @@
+# =====================================================
+# Adotaí - só para DESENVOLVIMENTO (XAMPP)
+#
+# Faz o navegador conferir com o servidor, a cada visita, se o HTML, o JS ou o CSS mudou
+# (se não mudou, o servidor responde "304" e nada é baixado de novo). Sem isto, o navegador
+# pode reaproveitar por horas a versão antiga de um arquivo e parecer que "o XAMPP demora
+# para aplicar a mudança".
+#
+# O bloco <IfModule> evita erro 500 caso o mod_headers esteja desligado.
+# Fica na pasta raiz do site (adotai/), junto do index.html.
+# =====================================================
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|js|css)$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>

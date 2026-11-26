@@ -292,8 +292,9 @@
             </section>
 
             <!-- =====================================================
-                 ABA 2: MEUS ANIMAIS (estrutura inicial)
-                 A lista será preenchida pelo JS quando a API existir.
+                 ABA 2: MEUS ANIMAIS  (pages/protetor_painel.html#animais)
+                 O JS preenche a lista com os dados de api/meus_animais.php:
+                 só os animais cadastrados pelo protetor logado.
                  ===================================================== -->
             <section class="painel-card" id="painel-animais" role="tabpanel"
                      aria-labelledby="aba-animais" hidden>
@@ -303,9 +304,18 @@
                     <p>Acompanhe os animais que você cadastrou e o andamento de cada adoção.</p>
                 </div>
 
-                <div id="meus-animais-lista"></div>
+                <p class="meus-animais-resumo" id="meus-animais-resumo" hidden></p>
 
-                <div class="vazio" id="meus-animais-vazio">
+                <div class="aviso aviso-erro aviso-acao" id="meus-animais-erro" role="alert" hidden>
+                    <span id="meus-animais-erro-texto"></span>
+                    <button type="button" class="btn-mini" id="meus-animais-tentar">Tentar de novo</button>
+                </div>
+
+                <p class="meus-animais-carregando" id="meus-animais-carregando" role="status" hidden>Carregando seus animais...</p>
+
+                <div class="animal-lista" id="meus-animais-lista"></div>
+
+                <div class="vazio" id="meus-animais-vazio" hidden>
                     <img src="../images/pata_login.png" alt="">
                     <h2>Nenhum animal cadastrado ainda</h2>
                     <p>Quando você cadastrar um animal, ele aparecerá aqui.</p>

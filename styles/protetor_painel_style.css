@@ -585,6 +585,145 @@
     color: var(--marrom);
 }
 
+/* ---------- Aba "Meus animais": lista de cards ---------- */
+.meus-animais-resumo {
+    margin: 0 0 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+.meus-animais-carregando {
+    margin: 0;
+    padding: 24px 0;
+    text-align: center;
+    color: var(--marrom);
+}
+
+/* Aviso de erro com botão "Tentar de novo" ao lado do texto */
+.aviso-acao {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 14px;
+}
+
+.btn-mini {
+    padding: 8px 14px;
+    border: 2px solid var(--escuro);
+    border-radius: 12px;
+    background-color: transparent;
+    color: var(--texto);
+    font-family: "Poppins", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-mini:hover { background-color: var(--pessego); }
+
+.animal-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.animal-item {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 16px;
+    padding: 14px;
+    background-color: #fff;
+    border: 2px solid var(--pessego);
+    border-radius: 16px;
+}
+
+.animal-foto {
+    width: 96px;
+    height: 96px;
+    border-radius: 14px;
+    object-fit: cover;
+    background-color: var(--creme);
+}
+
+.animal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.animal-topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+}
+
+.animal-nome {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    color: var(--escuro);
+    overflow-wrap: anywhere;
+}
+
+.animal-detalhes {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--marrom);
+}
+
+.animal-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.animal-chip {
+    padding: 2px 10px;
+    border-radius: 20px;
+    background-color: var(--creme);
+    color: var(--marrom);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Etiquetas de status (aprovação do admin e andamento da adoção) */
+.selo {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.selo-pendente    { background-color: var(--pessego); color: #8a4b00; }
+.selo-aprovado    { background-color: #e9f6ec; color: #1e5b2e; }
+.selo-recusado    { background-color: #fdecec; color: #8a1f1f; }
+.selo-disponivel  { background-color: #e6f0fb; color: #1d4a7a; }
+.selo-em-processo { background-color: #fff4cc; color: #7a5b00; }
+.selo-adotado     { background-color: #ececec; color: #444; }
+
+/* Recado do administrador sobre o animal (aguardando aprovação / motivo da recusa) */
+.animal-nota {
+    margin: 4px 0 0;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.animal-nota-pendente { background-color: var(--pessego); color: #8a4b00; }
+.animal-nota-recusado { background-color: #fdecec; color: #8a1f1f; }
+
 /* =========================================
    TABLET (até 900px): o menu lateral vira
    uma barra de abas no topo
@@ -639,6 +778,9 @@
 
     .painel-aba svg { display: none; }
     .painel-aba { font-size: 0.88rem; }
+
+    .animal-item { grid-template-columns: 72px minmax(0, 1fr); gap: 12px; }
+    .animal-foto { width: 72px; height: 72px; }
 
     .form-acoes { flex-direction: column-reverse; }
 
