@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinários | Adotaí</title>
+    <link rel="stylesheet" href="../styles/index_style.css">
+    <link rel="stylesheet" href="../styles/catalogo_veterinario_style.css">
+    <script src="../scripts/header_auth.js" defer></script>
+    <script src="../scripts/catalogo_veterinario_handler.js" defer></script>
+</head>
+<body>
+    <header>
+        <a class="brand" href="../index.html">
+            <img class="brand-icon" src="../images/logo_img.png" alt="Dog Logo">
+            <img class="brand-text" src="../images/logo_text.png" alt="Dog Logo Text">
+        </a>
+
+        <input type="checkbox" id="menu-toggle" aria-label="Abrir menu">
+        <label for="menu-toggle" class="menu-btn" aria-hidden="true">
+            <span></span><span></span><span></span>
+        </label>
+
+        <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="catalogo.html">Animais</a>
+            <a href="#">Planos</a>
+            <a href="catalogo_veterinario.html">Veterinários</a>
+            <a href="#footer-contato">Contato</a>
+        </nav>
+
+        <a id="adoption-header" href="./login.html">
+            <img style="height: 30px;"
+            src="../images/user_icon.png">
+        </a>
+
+    </header>
+
+    <main>
+        <section id="veterinarios">
+            <h1>VETERINÁRIOS</h1>
+            <p class="vet-subtitulo">Profissionais cadastrados no Adotaí. Entre em contato para agendar uma consulta.</p>
+
+            <input type="search" id="vet-busca" class="vet-busca"
+                   placeholder="Buscar por nome, especialidade, serviço ou cidade"
+                   aria-label="Buscar veterinários" autocomplete="off">
+
+            <div id="vet-card-list"></div>
+            <p id="vet-aviso" class="vet-aviso" role="status" hidden></p>
+        </section>
+    </main>
+
+    <footer>
+        <div id="footer-logo">
+            <div class="footer-brand">
+                <img src="../images/logo_img_footer2.png" alt="">
+                <img src="../images/logo_text_footer.png" alt="Adotaí">
+            </div>
+            <p>
+                Somos uma organização, sem fins lucrativos
+                que resgata, cuida e encontra lares cheios
+                de amor para animais abandonados.
+            </p>
+        </div>
+        <div id="footer-contato">
+            <h3>Contato</h3>
+            <p>contato@adotai.org ✉</p>
+            <p>(99) 9 9999-9999 ☏</p>
+            <p>Curitiba - PR 🖈</p>
+        </div>
+    </footer>
+</body>
+</html>

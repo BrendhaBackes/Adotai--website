@@ -1,0 +1,240 @@
+/* =====================================================
+   Catálogo de veterinários (cards gerados por catalogo_veterinario_handler.js)
+   Usa as variáveis de cor e o header/footer do index_style.css.
+   Carregue DEPOIS do index_style.css.
+   ===================================================== */
+
+[hidden] { display: none !important; }
+
+#veterinarios {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 var(--pad-x);
+    margin-top: 32px;
+}
+
+#veterinarios h1 {
+    margin-bottom: 8px;
+    text-align: center;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.vet-subtitulo {
+    margin: 0 0 20px;
+    max-width: 60ch;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    color: var(--marrom);
+}
+
+/* ---------- Busca ---------- */
+.vet-busca {
+    width: min(460px, 100%);
+    padding: 12px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--texto);
+    background-color: #fff;
+    border: 2px solid var(--pessego);
+    border-radius: 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.vet-busca::placeholder { color: #9a8a82; }
+
+.vet-busca:focus {
+    outline: none;
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 4px rgba(232, 138, 32, 0.22);
+}
+
+/* ---------- Lista ---------- */
+#vet-card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 36px;
+}
+
+.vet-aviso {
+    margin: 40px 0 0;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ---------- Card ---------- */
+.vet-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px 1px #909191c4;
+    font-family: 'Inter', sans-serif;
+}
+
+.vet-topo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.vet-foto,
+.vet-inicial {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.vet-inicial {
+    display: grid;
+    place-items: center;
+    background-color: var(--laranja);
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.vet-identidade {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+}
+
+.vet-nome {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.vet-crmv {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--marrom);
+}
+
+.vet-especialidade {
+    padding: 3px 10px;
+    border-radius: 20px;
+    background-color: var(--pessego);
+    color: var(--marrom);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.vet-info {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.vet-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+/* ---------- Serviços ---------- */
+.vet-servicos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.vet-servico {
+    padding: 2px 10px;
+    border-radius: 20px;
+    background-color: var(--creme);
+    color: var(--marrom);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ---------- Contato (sempre no pé do card) ---------- */
+.vet-contato {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 2px solid var(--pessego);
+}
+
+.vet-contato-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+}
+
+.vet-contato-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 8px;
+    overflow-wrap: anywhere;
+}
+
+.vet-contato-rotulo {
+    min-width: 68px;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+.vet-contato a {
+    color: var(--laranja);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.vet-contato a:hover { text-decoration: underline; }
+
+.vet-contato a:focus-visible {
+    outline: 3px solid var(--escuro);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.vet-sem-contato {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.vet-contato .vet-btn-whatsapp {
+    display: block;
+    margin-top: 12px;
+    padding: 11px 16px;
+    border-radius: 12px;
+    background-color: var(--laranja);
+    color: #fff;
+    text-align: center;
+    transition: filter 0.15s ease;
+}
+
+.vet-contato .vet-btn-whatsapp:hover {
+    text-decoration: none;
+    filter: brightness(0.92);
+}
+
+@media (max-width: 640px) {
+    #vet-card-list { grid-template-columns: 1fr; }
+}
