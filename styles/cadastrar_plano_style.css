@@ -1,0 +1,157 @@
+/* =========================================
+   CADASTRAR PLANO (painel do veterinário)
+   Complementa protetor_painel_style.css, que já traz o layout do painel,
+   os campos, as "pills" e as opções de marcar.
+   Carregue DEPOIS do protetor_painel_style.css.
+   ========================================= */
+
+/* ---------- Campo de valor com "R$" na frente ---------- */
+.input-prefixo { position: relative; }
+
+.input-prefixo input { padding-left: 46px; }
+
+.input-prefixo span {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    color: var(--marrom);
+    font-size: 0.85rem;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+/* ---------- Erro no grupo de coberturas ---------- */
+/* (o erro de "beneficios" fica no fieldset, e não num .campo) */
+.campo-grupo.tem-erro .opcao-check-conteudo,
+.campo-grupo.tem-erro textarea {
+    border-color: #d46a6a;
+}
+
+/* Espaço entre o texto de ajuda e o aviso de erro do grupo */
+.campo-grupo > .campo-ajuda { margin-top: 4px; }
+.campo-grupo > .campo-erro  { margin-top: 8px; }
+
+/* Texto de ajuda logo abaixo de uma linha de campos */
+.campos-linha + .campo-ajuda { margin-top: -6px; }
+
+/* =========================================
+   ABA "MEUS PLANOS": lista de cartões
+   ========================================= */
+#meus-planos-lista {
+    display: grid;
+    gap: 16px;
+}
+
+/* "Carregando..." */
+.plano-carregando {
+    margin: 0;
+    padding: 24px 0;
+    text-align: center;
+    color: var(--marrom);
+}
+
+/* botão "Tentar novamente" abaixo do aviso de erro */
+#meus-planos-lista > .btn-secundario { justify-self: start; }
+
+.plano-item {
+    padding: 20px;
+    background-color: var(--creme);
+    border: 2px solid var(--pessego);
+    border-radius: 16px;
+}
+
+.plano-item.em-destaque { border-color: var(--laranja); }
+
+.plano-item-topo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px 16px;
+}
+
+.plano-item-nome {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.15rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+/* selos: público, destaque e status */
+.plano-selos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.selo {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background-color: var(--pessego);
+    color: var(--marrom);
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.selo-destaque { background-color: var(--laranja); color: #fff; }
+.selo-ativo    { background-color: #e3f1e5; color: #1f5a2b; }
+.selo-inativo  { background-color: #ececec; color: #555; }
+
+.plano-preco {
+    margin: 10px 0 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--laranja);
+}
+
+.plano-preco small {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+.plano-descricao {
+    margin: 10px 0 0;
+    white-space: pre-line;          /* respeita as quebras de linha digitadas */
+    overflow-wrap: anywhere;
+}
+
+.plano-beneficios {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 20px;
+    margin: 14px 0 0;
+    padding: 14px 0 0;
+    border-top: 2px solid var(--pessego);
+    list-style: none;
+    font-size: 0.92rem;
+}
+
+.plano-beneficios li {
+    position: relative;
+    padding-left: 22px;
+    overflow-wrap: anywhere;
+}
+
+/* "visto" laranja antes de cada benefício */
+.plano-beneficios li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0.3em;
+    width: 6px;
+    height: 11px;
+    border: solid var(--laranja);
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+}
+
+@media (max-width: 560px) {
+    .plano-item { padding: 16px; }
+    .plano-beneficios { grid-template-columns: 1fr; }
+}
