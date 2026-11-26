@@ -50,3 +50,44 @@
     .plano-icone { width: 72px; height: 72px; }
     .plano-icone svg { width: 32px; height: 32px; }
 }
+
+/* =========================================
+   TEXTOS LONGOS SEM QUEBRAR O CARD
+   Limites do cadastro do plano: nome 50, benefício 100 (até 15), descrição 1000 caracteres.
+   O nome do veterinário (até 100) também entra no card.
+   ========================================= */
+
+/* Benefícios: o .animal-chip original é uma "pílula" de uma linha só.
+   Aqui ele pode ocupar várias linhas, quebra palavras compridas em qualquer ponto
+   e nunca passa da largura do card. */
+#planos-lista .animal-chips {
+    min-width: 0;
+    max-width: 100%;
+}
+
+#planos-lista .animal-chip {
+    min-width: 0;
+    max-width: 100%;
+    padding: 4px 12px;
+    border-radius: 14px;          /* 20px deixa de ser "pílula" quando o texto quebra em 2+ linhas */
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* Tudo que for texto do plano encolhe abaixo do tamanho do conteúdo em vez de estourar */
+#planos-lista .animal-item,
+#planos-lista .animal-info,
+#planos-lista .animal-topo,
+#planos-lista .animal-bloco { min-width: 0; }
+
+#planos-lista .animal-nome,
+#planos-lista .animal-detalhes,
+#planos-lista .animal-texto,
+#planos-lista .plano-preco-linha { overflow-wrap: anywhere; }
+
+/* Selos nunca passam do card (o texto deles é fixo e curto, mas o card pode ser estreito) */
+#planos-lista .selo { max-width: 100%; }
+
+/* O ícone não pode ser espremido quando o texto ao lado é grande */
+#planos-lista .plano-icone { flex-shrink: 0; }

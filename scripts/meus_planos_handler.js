@@ -15,7 +15,7 @@
     const URL_LOGIN    = new URL('pages/login.html', base).href;
     const URL_INICIO   = new URL('index.html', base).href;
 
-    // true  = quem não for adotante logado é redirecionado.
+    // true  = quem não for adotante/protetor logado é redirecionado.
     const EXIGIR_ADOTANTE = true;
 
     const $ = (id) => document.getElementById(id);
@@ -56,7 +56,7 @@
             if (!EXIGIR_ADOTANTE || !dados) return;
 
             if (!dados.logado)              { location.replace(URL_LOGIN);  return; }
-            if (dados.tipo !== 'adotante')  { location.replace(URL_INICIO); return; }
+            if (!['adotante', 'protetor'].includes(dados.tipo)) { location.replace(URL_INICIO); return; }
 
             if (dados.nome) $('painel-nome').textContent = dados.nome;
         })

@@ -38,7 +38,7 @@ function idPositivo(string $campo): ?int {
 }
 
 // ==================================================
-// 1) QUEM ESTÁ PEDINDO? (só adotante logado)
+// 1) QUEM ESTÁ PEDINDO? (só adotante ou protetor logado)
 // ==================================================
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     recusar(405, 'metodo', 'Requisição inválida.');
@@ -46,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 if (empty($_SESSION['logado'])) {
     recusar(401, 'nao_logado', 'Sua sessão expirou. Entre novamente na sua conta.');
 }
-if (($_SESSION['usuario_tipo'] ?? '') !== 'adotante') {
-    recusar(403, 'tipo_nao_permitido', 'Apenas contas de adotante podem cancelar assinaturas.');
+if (!in_array($_SESSION['usuario_tipo'] ?? '', ['adotante', 'protetor'], true)) {
+    recusar(403, 'tipo_nao_permitido', 'Apenas contas de adotante e protetor podem cancelar assinaturas.');
 }
 // Protege contra requisições forjadas de outro site (o JS manda este cabeçalho)
 if (($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') !== 'fetch') {

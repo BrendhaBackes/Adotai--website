@@ -32,7 +32,7 @@ function recusar(int $status, string $erro, string $mensagem): void {
 }
 
 // ==================================================
-// 1) QUEM ESTÁ PEDINDO? (só adotante logado)
+// 1) QUEM ESTÁ PEDINDO? (só adotante ou protetor logado)
 // ==================================================
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     recusar(405, 'metodo', 'Requisição inválida.');
@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 if (empty($_SESSION['logado'])) {
     recusar(401, 'nao_logado', 'Sua sessão expirou. Entre novamente na sua conta.');
 }
-if (($_SESSION['usuario_tipo'] ?? '') !== 'adotante') {
-    recusar(403, 'tipo_nao_permitido', 'Apenas contas de adotante têm planos assinados.');
+if (!in_array($_SESSION['usuario_tipo'] ?? '', ['adotante', 'protetor'], true)) {
+    recusar(403, 'tipo_nao_permitido', 'Apenas contas de adotante e protetor têm planos assinados.');
 }
 
 $idUsuario = (int) ($_SESSION['usuario_id'] ?? 0);
