@@ -829,7 +829,7 @@
 
 .animal-gerenciar-select:disabled { opacity: 0.6; cursor: wait; }
 
-.animal-gerenciar-acoes { display: flex; }
+.animal-gerenciar-acoes { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .animal-gerenciar-confirma {
     display: flex;
@@ -888,3 +888,34 @@
 .animal-nota { white-space: pre-line; }
 
 .animal-gerenciar-confirma span { overflow-wrap: anywhere; min-width: 0; }
+
+/* ---------- Aba "Meus animais": edição dentro do card ---------- */
+.animal-editar {
+    padding: 14px;
+    background-color: var(--creme);
+    border: 2px solid var(--pessego);
+    border-radius: 14px;
+}
+
+.animal-editar[hidden] { display: none; }
+
+.animal-editar .campo { margin-bottom: 12px; }
+
+.animal-editar .campo input,
+.animal-editar .campo textarea { background-color: #fff; }
+
+.animal-editar-erro { margin-bottom: 10px; }
+
+.animal-editar-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.btn-mini-salvar { border-color: var(--laranja); background-color: var(--laranja); color: #fff; }
+.btn-mini-salvar:hover { background-color: var(--laranja); filter: brightness(0.93); }
+
+@media (max-width: 560px) {
+    .animal-editar-acoes .btn-mini { flex: 1; }
+}

@@ -30,7 +30,7 @@ header('Cache-Control: no-store');
 // true  = animal de protetor com status 'Aprovado' já entra 'Aprovado' (aparece no catálogo na hora);
 //         de protetor 'Pendente' entra 'Pendente' (o admin precisa aprovar).
 // false = todo animal novo entra 'Pendente' e só aparece no catálogo depois que o admin aprovar.
-const PUBLICAR_DIRETO_SE_PROTETOR_APROVADO = true;
+const PUBLICAR_DIRETO_SE_PROTETOR_APROVADO = false;
 
 const FOTO_MAX_BYTES = 5 * 1024 * 1024;   // 5 MB (igual ao limite do JS)
 

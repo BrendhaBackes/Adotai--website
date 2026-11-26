@@ -341,6 +341,19 @@
     const btnAprovar = $('dlg-animal-aprovar');
     const btnRecusar = $('dlg-animal-recusar');
 
+    // Degradê no rodapé da janela: aparece só enquanto ainda há conteúdo para rolar
+    // (a barra de rolagem é escondida no CSS, então este é o aviso visual).
+    const corpoJanela = dlgAnimal.querySelector('.janela-corpo');
+
+    function atualizarDegrade() {
+        const resta = corpoJanela.scrollHeight - corpoJanela.scrollTop - corpoJanela.clientHeight;
+        corpoJanela.classList.toggle('tem-mais', resta > 4);
+    }
+
+    corpoJanela.addEventListener('scroll', atualizarDegrade, { passive: true });
+    window.addEventListener('resize', () => { if (dlgAnimal.open) atualizarDegrade(); });
+    dlgAnimal.addEventListener('close', () => corpoJanela.classList.remove('tem-mais'));
+
     function abrirAnimal(a, focarObservacao) {
         animalAberto = a;
 
@@ -385,6 +398,7 @@
 
         dlgAnimal.showModal();
         dlgAnimal.querySelector('.janela-corpo').scrollTop = 0;
+        atualizarDegrade();
         if (focarObservacao) {
             dlgObs.focus();
             dlgObs.scrollIntoView({ block: 'center' });
@@ -409,6 +423,7 @@
             dlgErro.hidden = false;
             dlgObs.closest('.campo').classList.add('tem-erro');
             dlgObs.focus();
+            atualizarDegrade();
             return;
         }
         decidirAnimal(animalAberto, 'Recusado', obs, [btnAprovar, btnRecusar]);
@@ -435,6 +450,7 @@
             if (dlgAnimal.open) {
                 dlgErro.textContent = erro.message;
                 dlgErro.hidden = false;
+                atualizarDegrade();
             } else {
                 avisar(erro.message, 'erro');
             }

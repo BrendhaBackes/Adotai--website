@@ -212,7 +212,7 @@
         // Recados do administrador
         if (a.status_aprovacao === 'Pendente') {
             info.appendChild(criar('p', 'animal-nota animal-nota-pendente',
-                'O administrador ainda vai analisar este cadastro. Enquanto isso, ele não aparece no catálogo.'));
+                'Cadastro enviado para analise.'));
         } else if (a.status_aprovacao === 'Recusado') {
             const nota = criar('p', 'animal-nota animal-nota-recusado');
             nota.appendChild(criar('strong', null, 'Motivo da recusa: '));
@@ -253,6 +253,168 @@
         if (resposta.status === 401) { location.replace(URL_LOGIN); throw new Error('Sessão expirada.'); }
         if (!resposta.ok || !corpo.ok) throw new Error(corpo.mensagem || 'Não foi possível concluir a ação.');
         return corpo;
+    }
+
+    // Formulário de edição dentro do card: nome, descrição, idade e condição de saúde
+    // (mesmos limites do cadastro; o PHP confere tudo de novo).
+    function criarFormEdicao(a, aoCancelar) {
+        const form = criar('form', 'animal-editar');
+        form.noValidate = true;
+        const idDe = (n) => `editar-${n}-${a.id_animal}`;
+
+        // Monta "rótulo + controle + erro (+ contador)"
+        function campo(rotulo, controle, max) {
+            const bloco = criar('div', 'campo');
+            const label = criar('label', '', rotulo);
+            label.htmlFor = controle.id;
+            const erro = criar('p', 'campo-erro');
+            erro.hidden = true;
+            const rodape = criar('div', 'campo-rodape');
+            rodape.appendChild(erro);
+
+            if (max) {
+                const contador = criar('span', 'contador');
+                const atualizar = () => {
+                    contador.textContent = `${controle.value.length} / ${max}`;
+                    contador.classList.toggle('no-limite', controle.value.length >= max);
+                };
+                controle.addEventListener('input', atualizar);
+                atualizar();
+                rodape.appendChild(contador);
+            }
+
+            bloco.append(label, controle, rodape);
+            bloco.addEventListener('input', () => { erro.hidden = true; bloco.classList.remove('tem-erro'); });
+            return { bloco, erro };
+        }
+
+        const inpNome = criar('input');
+        inpNome.type = 'text';
+        inpNome.id = idDe('nome');
+        inpNome.maxLength = 50;
+        inpNome.autocomplete = 'off';
+        inpNome.value = a.nome_animal || '';
+
+        const inpDesc = criar('textarea');
+        inpDesc.id = idDe('descricao');
+        inpDesc.rows = 5;
+        inpDesc.maxLength = 1000;
+        inpDesc.value = a.descricao || '';
+
+        // Idade: anos + meses -> idade_meses
+        const temIdade = a.idade_meses !== null && a.idade_meses !== undefined;
+        const inpAnos = criar('input');
+        inpAnos.type = 'number';
+        inpAnos.id = idDe('anos');
+        inpAnos.min = '0'; inpAnos.max = '50'; inpAnos.step = '1';
+        inpAnos.placeholder = '0';
+        inpAnos.value = temIdade ? String(Math.floor(a.idade_meses / 12)) : '';
+        const inpMeses = criar('input');
+        inpMeses.type = 'number';
+        inpMeses.id = idDe('meses');
+        inpMeses.min = '0'; inpMeses.max = '11'; inpMeses.step = '1';
+        inpMeses.placeholder = '0';
+        inpMeses.setAttribute('aria-label', 'Meses');
+        inpMeses.value = temIdade ? String(a.idade_meses % 12) : '';
+
+        const idade = criar('div', 'campo');
+        const idadeLabel = criar('label', '', 'Idade aproximada');
+        idadeLabel.htmlFor = inpAnos.id;
+        const grupo = criar('div', 'idade-grupo');
+        [[inpAnos, 'anos'], [inpMeses, 'meses']].forEach(([inp, sufixo]) => {
+            const caixa = criar('div', 'input-sufixo');
+            caixa.append(inp, criar('span', '', sufixo));
+            grupo.appendChild(caixa);
+        });
+        const erroIdade = criar('p', 'campo-erro');
+        erroIdade.hidden = true;
+        idade.append(idadeLabel, grupo, erroIdade);
+        idade.addEventListener('input', () => { erroIdade.hidden = true; idade.classList.remove('tem-erro'); });
+
+        const inpSaude = criar('textarea');
+        inpSaude.id = idDe('saude');
+        inpSaude.rows = 3;
+        inpSaude.maxLength = 500;
+        inpSaude.placeholder = 'Ex.: Saudável, sem restrições. Ou informe tratamentos, alergias, deficiências...';
+        inpSaude.value = a.condicao_saude || '';
+
+        const cNome  = campo('Nome do animal', inpNome);
+        const cDesc  = campo('Descrição', inpDesc, 1000);
+        const cSaude = campo('Condição de saúde', inpSaude, 500);
+
+        const erroGeral = criar('p', 'campo-erro animal-editar-erro');
+        erroGeral.setAttribute('role', 'alert');
+        erroGeral.hidden = true;
+
+        const btnSalvar = criar('button', 'btn-mini btn-mini-salvar', 'Salvar alterações');
+        btnSalvar.type = 'submit';
+        const btnCancelar = criar('button', 'btn-mini', 'Cancelar');
+        btnCancelar.type = 'button';
+        btnCancelar.addEventListener('click', aoCancelar);
+        const acoes = criar('div', 'animal-editar-acoes');
+        acoes.append(btnCancelar, btnSalvar);
+
+        form.append(cNome.bloco, cDesc.bloco, idade, cSaude.bloco, erroGeral, acoes);
+
+        function mostrar(bloco, erro, texto) {
+            erro.textContent = texto;
+            erro.hidden = false;
+            bloco.classList.add('tem-erro');
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            erroGeral.hidden = true;
+
+            const nome  = inpNome.value.trim();
+            const desc  = inpDesc.value.trim();
+            const saude = inpSaude.value.trim();
+            const anosTxt = inpAnos.value.trim();
+            const mesesTxt = inpMeses.value.trim();
+
+            let primeiro = null;
+            const falhou = (bloco, erro, texto, foco) => {
+                mostrar(bloco, erro, texto);
+                if (!primeiro) primeiro = foco;
+            };
+
+            if (!nome) falhou(cNome.bloco, cNome.erro, 'Informe o nome do animal.', inpNome);
+
+            if (!desc) falhou(cDesc.bloco, cDesc.erro, 'Escreva uma descrição para o animal.', inpDesc);
+            else if (desc.length < 20) falhou(cDesc.bloco, cDesc.erro, 'A descrição está muito curta (mínimo de 20 caracteres).', inpDesc);
+
+            let idadeMeses = '';
+            if (anosTxt !== '' || mesesTxt !== '') {
+                const anos = anosTxt === '' ? 0 : Number(anosTxt);
+                const meses = mesesTxt === '' ? 0 : Number(mesesTxt);
+                const valida = Number.isInteger(anos) && anos >= 0 && anos <= 50
+                            && Number.isInteger(meses) && meses >= 0 && meses <= 11;
+                if (valida) idadeMeses = String(anos * 12 + meses);
+                else falhou(idade, erroIdade, 'Use de 0 a 50 anos e de 0 a 11 meses.', inpAnos);
+            }
+
+            if (primeiro) { primeiro.focus(); return; }
+
+            btnSalvar.disabled = btnCancelar.disabled = true;
+            btnSalvar.textContent = 'Salvando...';
+            try {
+                await enviarAcao('editar', {
+                    id_animal: a.id_animal,
+                    nome_animal: nome,
+                    descricao: desc,
+                    idade_meses: idadeMeses,      // '' = não informada (NULL no banco)
+                    condicao_saude: saude,        // '' = sem condição informada (NULL)
+                });
+                carregarMeusAnimais();            // redesenha o card com os dados novos
+            } catch (erro) {
+                erroGeral.textContent = erro.message;
+                erroGeral.hidden = false;
+                btnSalvar.disabled = btnCancelar.disabled = false;
+                btnSalvar.textContent = 'Salvar alterações';
+            }
+        });
+
+        return { form, focar: () => inpNome.focus() };
     }
 
     function criarGerenciar(a) {
@@ -299,6 +461,8 @@
 
         // ----- Remover (pede confirmação no próprio card) -----
         const acoes = criar('div', 'animal-gerenciar-acoes');
+        const btnEditar = criar('button', 'btn-mini', 'Editar informações');
+        btnEditar.type = 'button';
         const btnRemover = criar('button', 'btn-mini btn-mini-perigo', 'Remover animal');
         btnRemover.type = 'button';
 
@@ -335,7 +499,24 @@
             }
         });
 
-        acoes.append(btnRemover, confirmacao);
+        // Editar: troca a linha de botões pelo formulário (criado só na primeira vez)
+        let edicao = null;
+        btnEditar.addEventListener('click', () => {
+            erro('');
+            if (!edicao) {
+                edicao = criarFormEdicao(a, () => {
+                    edicao.form.hidden = true;
+                    acoes.hidden = false;
+                    btnEditar.focus();
+                });
+                area.insertBefore(edicao.form, msg);
+            }
+            acoes.hidden = true;
+            edicao.form.hidden = false;
+            edicao.focar();
+        });
+
+        acoes.append(btnEditar, btnRemover, confirmacao);
         area.append(acoes, msg);
         return area;
     }

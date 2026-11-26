@@ -722,3 +722,76 @@ button:disabled {
     z-index: 5;
     box-shadow: 0 4px 14px rgba(37, 28, 25, 0.18);
 }
+
+
+/* =========================================
+   TEXTOS LONGOS SEM QUEBRAR O LAYOUT
+   Limites do cadastro do animal: nome 50, espécie 30, raça/cor 80,
+   condição de saúde 500, descrição 1000 (e observação do admin, 1000).
+   Palavras compridas e sem espaço quebram em qualquer ponto, e a
+   janela de detalhes rola sem barra de rolagem, com um degradê no
+   rodapé que avisa que ainda há conteúdo (igual ao card em destaque
+   do catálogo de animais).
+   ========================================= */
+
+/* Itens que precisam poder encolher abaixo do tamanho do texto */
+.janela,
+.janela-corpo,
+.janela-topo h2,
+.detalhes div,
+.detalhes dd,
+.campo,
+.campo textarea { min-width: 0; }
+
+/* Título da janela (nome do animal, até 50 caracteres) */
+.janela-topo h2 {
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.janela-fechar { flex-shrink: 0; }
+
+.janela-badges .selo { flex-shrink: 0; }
+
+/* Valores dos detalhes e mensagens: quebram em qualquer ponto */
+.detalhes dd,
+.detalhes dt,
+.campo-erro,
+.janela-corpo p,
+.resposta-box,
+.aviso {
+    overflow-wrap: anywhere;
+}
+
+/* Janela de detalhes: rola sem mostrar a barra, para as bordas arredondadas ficarem limpas */
+.janela-corpo {
+    scrollbar-width: none;          /* Firefox */
+    -ms-overflow-style: none;       /* Edge/IE antigos */
+}
+
+.janela-corpo::-webkit-scrollbar { display: none; }   /* Chrome, Safari, Edge */
+
+/* Degradê no rodapé da área rolável: só aparece enquanto há mais conteúdo para rolar
+   (a classe "tem-mais" é ligada e desligada pelo painel_admin_handler.js).
+   Fica preso ao topo da faixa de botões, por isso encosta exatamente na borda inferior
+   da área rolável, sem depender do padding dela. */
+.janela-acoes { position: relative; }
+
+.janela-acoes::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;                   /* logo acima da faixa de botões */
+    height: 56px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 85%);
+    pointer-events: none;           /* não atrapalha cliques nem toques no conteúdo por baixo */
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.janela-corpo.tem-mais + .janela-acoes::before { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+    .janela-acoes::before { transition: none; }
+}

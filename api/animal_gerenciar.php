@@ -7,6 +7,7 @@
 // Só POST. A ação vem na URL (?acao=...):
 //
 //   POST ?acao=status   -> id_animal, status_adocao ('Disponível'|'Em processo'|'Adotado')
+//   POST ?acao=editar   -> id_animal, nome_animal, descricao, idade_meses ('' = não informada), condicao_saude
 //   POST ?acao=remover  -> id_animal
 //
 // O protetor NUNCA vem da requisição: é descoberto pela sessão, e toda consulta
@@ -26,6 +27,10 @@ ini_set('display_errors', '0');
 // ==================================================
 const STATUS_ADOCAO = ['Disponível', 'Em processo', 'Adotado'];   // valores do ENUM animal.status_adocao
 const PASTA_FOTOS   = __DIR__ . '/../fotos';                       // mesma pasta do animal_cadastrar.php
+
+// false = editar um animal não muda o status de aprovação (o que está no catálogo continua lá).
+// true  = qualquer edição devolve o animal para 'Pendente' e o admin precisa aprovar de novo.
+const REVISAR_APOS_EDICAO = true;
 
 // ==================================================
 // FUNÇÕES AUXILIARES
@@ -76,7 +81,7 @@ $idUsuario = (int) ($_SESSION['usuario_id'] ?? 0);
 session_write_close();
 
 $acao = isset($_GET['acao']) && is_string($_GET['acao']) ? $_GET['acao'] : '';
-if (!in_array($acao, ['status', 'remover'], true)) {
+if (!in_array($acao, ['status', 'editar', 'remover'], true)) {
     recusar(404, 'acao', 'Ação desconhecida.');
 }
 
@@ -138,6 +143,55 @@ try {
         $stmt->close();
 
         responder(200, ['ok' => true, 'status_adocao' => $novo]);
+    }
+
+    // ---------------- Editar nome, descrição, idade e condição de saúde ----------------
+    if ($acao === 'editar') {
+        // As mesmas regras do cadastro (api/animal_cadastrar.php)
+        $nome      = texto('nome_animal');
+        $descricao = texto('descricao');
+        $idadeTxt  = texto('idade_meses');
+        $condicao  = texto('condicao_saude');
+
+        if ($nome === '' || mb_strlen($nome) > 50) {
+            recusar(422, 'nome_animal', 'Informe o nome do animal (até 50 caracteres).');
+        }
+        if (mb_strlen($descricao) < 20 || mb_strlen($descricao) > 1000) {
+            recusar(422, 'descricao', 'A descrição deve ter entre 20 e 1000 caracteres.');
+        }
+        if (mb_strlen($condicao) > 500) {
+            recusar(422, 'condicao_saude', 'A condição de saúde deve ter no máximo 500 caracteres.');
+        }
+
+        // Idade: vazia = não informada (NULL). Senão, de 0 a 611 meses (50 anos e 11 meses)
+        $idadeMeses = null;
+        if ($idadeTxt !== '') {
+            if (!ctype_digit($idadeTxt) || strlen($idadeTxt) > 3 || (int) $idadeTxt > 611) {
+                recusar(422, 'idade', 'Idade inválida. Use de 0 a 50 anos e de 0 a 11 meses.');
+            }
+            $idadeMeses = (int) $idadeTxt;
+        }
+
+        $condicaoBd = $condicao === '' ? null : $condicao;
+
+        if (REVISAR_APOS_EDICAO) {
+            $stmt = $conn->prepare(
+                "UPDATE animal
+                    SET nome_animal = ?, descricao = ?, idade_meses = ?, condicao_saude = ?, status_aprovacao = 'Pendente'
+                  WHERE id_animal = ? AND id_protetor = ?"
+            );
+        } else {
+            $stmt = $conn->prepare(
+                'UPDATE animal
+                    SET nome_animal = ?, descricao = ?, idade_meses = ?, condicao_saude = ?
+                  WHERE id_animal = ? AND id_protetor = ?'
+            );
+        }
+        $stmt->bind_param('ssisii', $nome, $descricao, $idadeMeses, $condicaoBd, $idAnimal, $idProtetor);
+        $stmt->execute();
+        $stmt->close();
+
+        responder(200, ['ok' => true]);
     }
 
     // ---------------- Remover o animal ----------------
